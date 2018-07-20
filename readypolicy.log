@@ -10524,3 +10524,4 @@
 [2018-07-06T12:41:39.909] [FATAL] readypolicy - Taking Response From Calculate Car Premium API.
 [2018-07-06T12:41:39.915] [FATAL] readypolicy - Converting Response in Json
 [2018-07-06T12:41:39.923] [ERROR] readypolicy - For the product Motor Own Damage - Add ons - OEM the annual net premium must be greater than 0,-!, , at.allianz.gfb.core.vertrag |
+[2018-07-20T10:10:39.822] [FATAL] readypolicy - Server has started App is Running on Port 8082
