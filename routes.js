@@ -2,6 +2,7 @@
 // here only routing is done and if the ro
 'use strict';
 const SendOtp = require('sendotp');
+var js2xmlparser = require("js2xmlparser")
 const sendOtp = new SendOtp('223774AjX8U4ux5b3a022d');
 var crypto = require('crypto');
 const jwt = require('jsonwebtoken');
@@ -19,9 +20,9 @@ var multipart = require('connect-multiparty');
 var multipartMiddleware = multipart();
 const nodemailer = require('nodemailer');
 var express = require('express');
+// var parse = require('xml-parser');
 var router = express.Router();
-var log4js = require('log4js');
-//const log4js = require('./log4js-node/lib/log4js');
+const log4js = require('./log4js-node/lib/log4js');
 log4js.configure({
     appenders: { readypolicy: { type: 'file', filename: 'readypolicy.log' } },
     categories: { default: { appenders: ['readypolicy'], level: 'error' } }
@@ -69,13 +70,24 @@ const gproposalcar = require('./functions/gproposalcar');
 const notifyClaim = require('./functions/notifyClaim');
 const createClaim = require('./functions/createClaim');
 const rejectClaim = require('./functions/rejectClaim');
-const digitgo = require('./functions/digitgo');
 const examineClaim = require('./functions/examineClaim');
 const negotiateClaim = require('./functions/negotiateClaim');
 const negotiateClaimFind = require('./functions/negotiateClaimFind');
 const approveClaim = require('./functions/approveClaim');
 const settleClaim = require('./functions/settleClaim');
 const fetchClaimlist = require('./functions/fetchClaimlist');
+
+//const godigitquickquote = require('./functions/godigitquickquote');
+const bharathiquickquote = require('./functions/bharathiquickquote');
+const bharathiproposal = require('./functions/bharathiproposal');
+const digitgo2wcreatequote = require('./functions/digitgo2wcreatequote');
+const digitgo2wquickquote = require('./functions/digitgo2wquickquote');
+
+//const godigitcreatequote = require('./functions/godigitcreatequote');
+var startdatetemp;
+var enddatetemp;
+
+
 
 const nexmo = new Nexmo({
     apiKey: 'c7ae10d1',
@@ -108,7 +120,7 @@ module.exports = router => {
 
             register
                 .registerUser(userObject)
-                .then(result => {s
+                .then(result => {
 
                    
                     res
@@ -127,10 +139,7 @@ module.exports = router => {
         
     });
    
-    router.post("/ssoReturnURL", (req, res) =>{
-        console.log("SSO Redirect URL: ", req.body);
-        res.redirect('http://10.70.230.159/e-Sakhi/'); //url to UI
-    })
+  
 
     router.post('/newLogin1', cors(), (req, res) => {
 
@@ -153,20 +162,12 @@ module.exports = router => {
           });
         var otptosend = 'your otp is ' + otp;
 
-
-
-
-
-
-
-
         if (!phonetosend) {
             logger.error('Invalid Request');
             res
                 .status(400)
                 .json({
                     message: 'Invalid Request !'
-                  
                 });
 
         } else {
@@ -195,6 +196,9 @@ module.exports = router => {
                         .json({
                             message: result.message,
                             token:token,
+                            
+                            phone:phonetosend
+                           
                         });
 
                 })
@@ -206,7 +210,7 @@ module.exports = router => {
         }else{
 
             register
-            .registerUser(phonetosend,otp)
+            .registerUser(phonetosend, otp)
             .then(result => {
                 const token = jwt.sign(result, config.secret, {
                     expiresIn: 60000
@@ -217,7 +221,7 @@ module.exports = router => {
                         message: result.message,
                         token:token,
                         otp:otp,
-                        phone:phonetosend,
+                        phone:phonetosend
                     });
             })
             .catch(err => res.status(err.status).json({
@@ -1311,13 +1315,174 @@ module.exports = router => {
         }
     });
 
-    router.post('/calculatepremium', (req, res) => {
-        if (!checkToken(req)) {
-            console.log("invalid token")
-            return res.status(401).json({
-                message: "invalid token"
+    
+    
+    router.post('/bharathiproposal', (req, res) => {
+        // if (!checkToken(req)) {
+        //     console.log("invalid token")
+        //     return res.status(401).json({
+        //         message: "invalid token"
+        //     })
+        // }
+        logger.fatal('Hitting gproposal for two wheeler');
+        var obj=req.body;
+        console.log(obj)
+        var proposalenddate=  obj.Body.serve.SessionDoc.Session.Quote.PolicyEndDate
+
+       var proposalstartdate=  obj.Body.serve.SessionDoc.Session.Quote.PolicyStartDate
+  console.log(proposalstartdate,"kaviiiiiiiii")
+const proposalrequest='<Envelope xmlns="http://schemas.xmlsoap.org/soap/envelope/"><Body><serve xmlns="http://schemas.cordys.com/gateway/Provider"> <SessionDoc><Session><SessionData xmlns="http://schemas.cordys.com/bagi/b2c/emotor/bpm/1.0"><Index>2</Index><InitTime>Thu, 13 Apr 2017 16:55:41 GMT</InitTime><UserName>signMtr</UserName><Password>AZg3Q1SktWKLz0Os/H0MlAxFfI75pjnpKjn9xrV9vimyyS7/5Ilil/ftcP5oHxC7IFYLVF0C3MAJcIznwrZvDA==</Password>	<OrderNo>VDJC492112</OrderNo><QuoteNo>QRN201807160000632</QuoteNo><Route>INT</Route><Contract>MTR</Contract><Channel>polbaz</Channel><TransactionType>Quote</TransactionType><TransactionStatus>Fresh</TransactionStatus><ID>149208275803217169563038</ID><UserAgentID>2C000098</UserAgentID><Source>2C000098</Source></SessionData><tns:Vehicle xmlns:tns="http://schemas.cordys.com/bagi/b2c/emotor/2.0">	<tns:TypeOfBusiness>TR</tns:TypeOfBusiness>	<tns:AccessoryInsured>N</tns:AccessoryInsured><tns:AccessoryValue>0</tns:AccessoryValue><tns:BiFuelKit>	<tns:IsBiFuelKit>N</tns:IsBiFuelKit><tns:BiFuelKitValue>0</tns:BiFuelKitValue><tns:ExternallyFitted>N</tns:ExternallyFitted></tns:BiFuelKit><tns:DateOfRegistration>2014-04-01T00:00:00.000</tns:DateOfRegistration><tns:DateOfManufacture>2014-04-01T00:00:00.000</tns:DateOfManufacture><tns:RiskType>FTW</tns:RiskType><tns:Make>HERO MOTOR CORP</tns:Make><tns:Model>PASSION</tns:Model><tns:FuelType>P</tns:FuelType><tns:Variant>X PRO DRUM DISC SELF</tns:Variant><tns:IDV>41208.00</tns:IDV><tns:EngineNo>JA12ABDGM26881</tns:EngineNo>	<tns:ChasisNo>MBLJA12ACDGM21415</tns:ChasisNo><tns:VehicleAge>4</tns:VehicleAge><tns:CC>110</tns:CC><tns:SeatingCapacity>2</tns:SeatingCapacity><tns:PlaceOfRegistration>Bettiah</tns:PlaceOfRegistration><tns:VehicleExtraTag01 />	<tns:RegistrationNo>BR22S3564 </tns:RegistrationNo>	<tns:ExShowroomPrice>52297</tns:ExShowroomPrice><tns:PaidDriver>False</tns:PaidDriver></tns:Vehicle><tns:Quote xmlns:tns="http://schemas.cordys.com/bagi/b2c/emotor/2.0"><tns:LLDriver>false</tns:LLDriver><tns:ExistingPolicy>	<tns:Claims>0</tns:Claims><tns:NCB>35</tns:NCB>	<tns:PolicyType>Comprehensive</tns:PolicyType><tns:EndDate>2017-04-19T23:59:59.000</tns:EndDate><tns:PolicyNo>OG-17-9906-1802-00004439</tns:PolicyNo><tns:InsuranceCompany>Bajaj Allianz General Insurance Co. Ltd.</tns:InsuranceCompany></tns:ExistingPolicy>	<tns:PolicyStartDate>'+proposalstartdate+'</tns:PolicyStartDate><tns:Deductible>0</tns:Deductible><tns:PAFamilySI>0</tns:PAFamilySI><tns:AgentNumber /><tns:DealerId /><tns:Premium><tns:Discount /></tns:Premium><tns:SelectedCovers><tns:CarDamageSelected>true</tns:CarDamageSelected>	<tns:TPLiabilitySelected>true</tns:TPLiabilitySelected>	<tns:PADriverSelected>true</tns:PADriverSelected><tns:PAFamilyPremiumSelected>true</tns:PAFamilyPremiumSelected></tns:SelectedCovers><tns:PolicyEndDate>'+proposalenddate+'</tns:PolicyEndDate></tns:Quote><tns:Client xmlns:tns="http://schemas.cordys.com/bagi/b2c/emotor/2.0"><tns:ClientType>Individual</tns:ClientType><tns:FinancierDetails><tns:IsFinanced>0</tns:IsFinanced></tns:FinancierDetails>	<tns:CltDOB>19790930</tns:CltDOB><tns:CltSex>M</tns:CltSex>	<tns:Salut>MR</tns:Salut><tns:GivName>AJAY</tns:GivName><tns:ClientExtraTag01>BIHAR</tns:ClientExtraTag01><tns:CityOfResidence>Bettiah</tns:CityOfResidence><tns:EmailID>ajaysktpp@gmail.com</tns:EmailID><tns:MobileNo>8084088091</tns:MobileNo><tns:SurName>Kumar Tiwari</tns:SurName><tns:Marryd>S</tns:Marryd><tns:Occupation>0007</tns:Occupation>	<tns:CltAddr01>vishunpurwa po d k shikarpur</tns:CltAddr01>	<tns:CltAddr02>ps -Shikarpur</tns:CltAddr02><tns:City>Bettiah</tns:City><tns:State>Bihar</tns:State><tns:PinCode>845451</tns:PinCode><tns:Nominee><tns:Name>punam pandey</tns:Name>	<tns:Age>39</tns:Age><tns:Relationship>Spouse</tns:Relationship></tns:Nominee><tns:RegistrationZone>B</tns:RegistrationZone></tns:Client><Payment><PaymentMode /><PaymentType /><TxnReferenceNo /><TxnAmount />	<TxnDate />	<BankCode /><InstrumentAmount /></Payment></Session></SessionDoc> </serve> </Body></Envelope>'
+
+      
+       console.log(proposalrequest,"proposalrequest")
+      
+        
+        
+    
+         if (!proposalrequest) {
+        logger.error('Body is Invalid...');
+        console.log(" invalid body ")
+        return res.status(400).json({
+            message: 'Invalid Request !'
+        });
+    
+    }else{
+
+            bharathiproposal.bharathiproposal(proposalrequest)
+    
+        .then(result => {
+           
+                res.status(result.status).json({
+                    message: result.message,
+                    response: result.Response
+                })
             })
+    
+            .catch(err => res.status(err.status).json({
+                message: err.message
+            }));
+    
         }
+    });
+
+
+    router.post('/bharathiquickquote', (req, res) => {
+        console.log("hiiiiiiiiiiii")
+      
+      // var  xmldata1=JSON.stringify(req.body);
+       var  xmldata2=req.body;
+       //console.log(xmldata1)
+       var startdatetemp=xmldata2.Body.serve.SessionDoc.Session.Quote.PolicyStartDate
+       var enddatetemp=xmldata2.Body.serve.SessionDoc.Session.Quote.PolicyEndDate
+console.log(startdatetemp,"raj")
+console.log(enddatetemp,"kavitha")
+
+       // var xmldata = '<Envelope xmlns="http://schemas.xmlsoap.org/soap/envelope/">      <Body>        <serve xmlns="http://schemas.cordys.com/gateway/Provider">            <SessionDoc><Session>	<SessionData xmlns="http://schemas.cordys.com/bagi/b2c/emotor/bpm/1.0">		<Index>1</Index>		<InitTime>Thu, 13 Apr 2017 16:55:39 GMT</InitTime>		<UserName>signMtr</UserName>		<Password>AZg3Q1SktWKLz0Os/H0MlAxFfI75pjnpKjn9xrV9vimyyS7/5Ilil/ftcP5oHxC7IFYLVF0C3MAJcIznwrZvDA==</Password>		<OrderNo>NA</OrderNo>		<QuoteNo>NA</QuoteNo>		<Route>INT</Route>		<Contract>MTR</Contract>		<Channel>polbaz</Channel>		<TransactionType>Quote</TransactionType>		<TransactionStatus>Fresh</TransactionStatus>		<ID>149208275275017943554968</ID>		<UserAgentID>2C000098</UserAgentID>		<Source>2C000098</Source>	</SessionData>	<tns:Vehicle xmlns:tns="http://schemas.cordys.com/bagi/b2c/emotor/2.0">		<tns:TypeOfBusiness>TR</tns:TypeOfBusiness>		<tns:AccessoryInsured>N</tns:AccessoryInsured>		<tns:NonElecAccessoryInsured>N</tns:NonElecAccessoryInsured>		<tns:AccessoryValue>0</tns:AccessoryValue>		<tns:BiFuelKit>			<tns:IsBiFuelKit>N</tns:IsBiFuelKit>			<tns:BiFuelKitValue>0</tns:BiFuelKitValue>			<tns:ExternallyFitted>N</tns:ExternallyFitted>		</tns:BiFuelKit>		<tns:DateOfRegistration>2014-04-01T00:00:00.000</tns:DateOfRegistration>		<tns:DateOfManufacture>2014-04-01T00:00:00.000</tns:DateOfManufacture>		<tns:RiskType>FTW</tns:RiskType>		<tns:Make>HERO MOTOR CORP</tns:Make>		<tns:Model>PASSION</tns:Model>		<tns:FuelType>P</tns:FuelType>		<tns:Variant>X PRO DRUM DISC SELF</tns:Variant>		<tns:IDV>41208</tns:IDV>		<tns:VehicleAge>4</tns:VehicleAge>		<tns:CC>110</tns:CC>		<tns:PlaceOfRegistration>Bettiah</tns:PlaceOfRegistration>		<tns:SeatingCapacity>2</tns:SeatingCapacity>		<tns:VehicleExtraTag01 />		<tns:RegistrationNo>BR22S3564 </tns:RegistrationNo>		<tns:ExShowroomPrice>52297</tns:ExShowroomPrice>		<tns:PaidDriver>False</tns:PaidDriver>	</tns:Vehicle>	<tns:Quote xmlns:tns="http://schemas.cordys.com/bagi/b2c/emotor/2.0">		<tns:LLDriver>false</tns:LLDriver>		<tns:ExistingPolicy>			<tns:Claims>0</tns:Claims>			<tns:NCB>35</tns:NCB>			<tns:PolicyType>Comprehensive</tns:PolicyType>			<tns:EndDate>2019-07-14T23:59:59.000</tns:EndDate>		</tns:ExistingPolicy>		<tns:PolicyStartDate>2018-07-15T00:00:00.000</tns:PolicyStartDate>		<tns:Deductible>0</tns:Deductible>		<tns:PAFamilySI>0</tns:PAFamilySI>		<tns:AgentNumber />		<tns:DealerId />		<tns:Premium>			<tns:Discount />		</tns:Premium>		<tns:SelectedCovers>			<tns:CarDamageSelected>True</tns:CarDamageSelected>			<tns:PAFamilyPremiumSelected>true</tns:PAFamilyPremiumSelected>			<tns:TPLiabilitySelected>True</tns:TPLiabilitySelected>			<tns:PADriverSelected>True</tns:PADriverSelected>			<tns:PAFamilyPremiumSelected>true</tns:PAFamilyPremiumSelected>		</tns:SelectedCovers>		<tns:PolicyEndDate>2018-04-19T23:59:59.000</tns:PolicyEndDate>	</tns:Quote>	<tns:Client xmlns:tns="http://schemas.cordys.com/bagi/b2c/emotor/2.0">		<tns:ClientType>Individual</tns:ClientType>		<tns:CltDOB />		<tns:FinancierDetails>			<tns:IsFinanced>0</tns:IsFinanced>		</tns:FinancierDetails>		<tns:GivName>TW238275707201704130455394890 </tns:GivName>		<tns:SurName />		<tns:ClientExtraTag01>BIHAR</tns:ClientExtraTag01>		<tns:CityOfResidence>Bettiah</tns:CityOfResidence>		<tns:EmailID>pb@pb.com</tns:EmailID>		<tns:MobileNo>9777777777</tns:MobileNo>		<tns:RegistrationZone>B</tns:RegistrationZone>	</tns:Client></Session> </SessionDoc>        </serve>    </Body></Envelope>'
+
+        var xmldata = '<Envelope xmlns="http://schemas.xmlsoap.org/soap/envelope/">      <Body>        <serve xmlns="http://schemas.cordys.com/gateway/Provider">            <SessionDoc><Session>	<SessionData xmlns="http://schemas.cordys.com/bagi/b2c/emotor/bpm/1.0">		<Index>1</Index>		<InitTime>Thu, 13 Apr 2017 16:55:39 GMT</InitTime>		<UserName>signMtr</UserName>		<Password>AZg3Q1SktWKLz0Os/H0MlAxFfI75pjnpKjn9xrV9vimyyS7/5Ilil/ftcP5oHxC7IFYLVF0C3MAJcIznwrZvDA==</Password>		<OrderNo>NA</OrderNo>		<QuoteNo>NA</QuoteNo>		<Route>INT</Route>		<Contract>MTR</Contract>		<Channel>polbaz</Channel>		<TransactionType>Quote</TransactionType>		<TransactionStatus>Fresh</TransactionStatus>		<ID>149208275275017943554968</ID>		<UserAgentID>2C000098</UserAgentID>		<Source>2C000098</Source>	</SessionData>	<tns:Vehicle xmlns:tns="http://schemas.cordys.com/bagi/b2c/emotor/2.0">		<tns:TypeOfBusiness>TR</tns:TypeOfBusiness>		<tns:AccessoryInsured>N</tns:AccessoryInsured>		<tns:NonElecAccessoryInsured>N</tns:NonElecAccessoryInsured>		<tns:AccessoryValue>0</tns:AccessoryValue>		<tns:BiFuelKit>			<tns:IsBiFuelKit>N</tns:IsBiFuelKit>			<tns:BiFuelKitValue>0</tns:BiFuelKitValue>			<tns:ExternallyFitted>N</tns:ExternallyFitted>		</tns:BiFuelKit>		<tns:DateOfRegistration>2014-04-01T00:00:00.000</tns:DateOfRegistration>		<tns:DateOfManufacture>2014-04-01T00:00:00.000</tns:DateOfManufacture>		<tns:RiskType>FTW</tns:RiskType>		<tns:Make>HERO MOTOR CORP</tns:Make>		<tns:Model>PASSION</tns:Model>		<tns:FuelType>P</tns:FuelType>		<tns:Variant>X PRO DRUM DISC SELF</tns:Variant>		<tns:IDV>41208</tns:IDV>		<tns:VehicleAge>4</tns:VehicleAge>		<tns:CC>110</tns:CC>		<tns:PlaceOfRegistration>Bettiah</tns:PlaceOfRegistration>		<tns:SeatingCapacity>2</tns:SeatingCapacity>		<tns:VehicleExtraTag01 />		<tns:RegistrationNo>BR22S3564 </tns:RegistrationNo>		<tns:ExShowroomPrice>52297</tns:ExShowroomPrice>		<tns:PaidDriver>False</tns:PaidDriver>	</tns:Vehicle>	<tns:Quote xmlns:tns="http://schemas.cordys.com/bagi/b2c/emotor/2.0">		<tns:LLDriver>false</tns:LLDriver>		<tns:ExistingPolicy>			<tns:Claims>0</tns:Claims>			<tns:NCB>35</tns:NCB>			<tns:PolicyType>Comprehensive</tns:PolicyType>			<tns:EndDate>2019-07-14T23:59:59.000</tns:EndDate>		</tns:ExistingPolicy>		<tns:PolicyStartDate>'+startdatetemp+'</tns:PolicyStartDate>		<tns:Deductible>0</tns:Deductible>		<tns:PAFamilySI>0</tns:PAFamilySI>		<tns:AgentNumber />		<tns:DealerId />		<tns:Premium>			<tns:Discount />		</tns:Premium>		<tns:SelectedCovers>			<tns:CarDamageSelected>True</tns:CarDamageSelected>			<tns:PAFamilyPremiumSelected>true</tns:PAFamilyPremiumSelected>			<tns:TPLiabilitySelected>True</tns:TPLiabilitySelected>			<tns:PADriverSelected>True</tns:PADriverSelected>			<tns:PAFamilyPremiumSelected>true</tns:PAFamilyPremiumSelected>		</tns:SelectedCovers>		<tns:PolicyEndDate>'+enddatetemp+'</tns:PolicyEndDate>	</tns:Quote>	<tns:Client xmlns:tns="http://schemas.cordys.com/bagi/b2c/emotor/2.0">		<tns:ClientType>Individual</tns:ClientType>		<tns:CltDOB />		<tns:FinancierDetails>			<tns:IsFinanced>0</tns:IsFinanced>		</tns:FinancierDetails>		<tns:GivName>TW238275707201704130455394890 </tns:GivName>		<tns:SurName />		<tns:ClientExtraTag01>BIHAR</tns:ClientExtraTag01>		<tns:CityOfResidence>Bettiah</tns:CityOfResidence>		<tns:EmailID>pb@pb.com</tns:EmailID>		<tns:MobileNo>9777777777</tns:MobileNo>		<tns:RegistrationZone>B</tns:RegistrationZone>	</tns:Client></Session> </SessionDoc>        </serve>    </Body></Envelope>'
+
+        console.log(xmldata); 
+     
+    
+        console.log('Done');
+         if (!xmldata) {
+            logger.error('Body Is Invalid');
+            console.log("invalid body ")
+            return res.status(400).json({
+                message: 'Invalid Request !'
+            });
+        
+        }else{
+            logger.fatal('Premium Request Sucessfull....');
+            bharathiquickquote.bharathiquickquote(xmldata)
+        
+            .then(result => {
+               
+                    res.status(result.status).json({
+                        message: result.message,
+                        response: result.Response
+                    })
+                })
+        
+                .catch(err => res.status(err.status).json({
+                    message: err.message
+                }));
+        
+            }
+        
+     
+ });
+    
+
+
+    
+      
+ 
+
+
+    
+    // router.post('/bharathiquickquote', (req, res) => {
+        // if (!checkToken(req)) {
+        //     console.log("invalid token")
+        //     return res.status(401).json({
+        //         message: "invalid token"
+        //     })
+        // }
+
+        // console.log("hiiiii")
+        // logger.fatal('Hiiiiiiiiiiii');
+        // logger.fatal('Entering Into Calculate Premium......');
+      //  const bharathirequest = req.body;
+       // logger.fatal(bharathirequest);
+      
+      // console.log(bharathirequest,"premiumrequest")
+      
+//        var fs = require('fs'),
+//     xml2js = require('xml2js');
+ 
+//       var parser = new xml2js.Parser();
+//    var data = fs.readFile(__dirname + '/raja.xml');
+//     var result = parser.parseString(data);
+//     condole.log("Hii2")
+//         const bharathirequest = result ;
+//         console.log("first " , bharathirequest);
+//         console.log('Done');
+
+  
+        
+    
+//          if (!bharathirequest) {
+//         logger.error('Body Is Invalid');
+//         console.log("invalid body ")
+//         return res.status(400).json({
+//             message: 'Invalid Request !'
+//         });
+    
+//     }else{
+//         logger.fatal('Premium Request Sucessfull....');
+//         bharathiquickquote.bharathiquickquote(bharathirequest)
+    
+//         .then(result => {
+           
+//                 res.status(result.status).json({
+//                     message: result.message,
+//                     response: result.Response
+//                 })
+//             })
+    
+//             .catch(err => res.status(err.status).json({
+//                 message: err.message
+//             }));
+    
+//         }
+//     });
+    router.post('/calculatepremium', (req, res) => {
+        // if (!checkToken(req)) {
+        //     console.log("invalid token")
+        //     return res.status(401).json({
+        //         message: "invalid token"
+        //     })
+        // }
         logger.fatal('Entering Into Calculate Premium......');
         const premiumrequest = req.body.CALCULATEPREMIUMREQUEST;
        
@@ -1351,7 +1516,179 @@ module.exports = router => {
             }));
     
         }
-    });   
+    }); 
+
+   
+    
+    router.post('/godigitquickquote', (req, res) => {
+        console.log('Haiiiiiii');
+        // if (!checkToken(req)) {
+        //     console.log("invalid token")
+        //     return res.status(401).json({
+        //         message: "invalid token"
+        //     })
+        // }
+     
+        logger.fatal('Entering Into godigitcreatequote........');
+       const quickquote = req.body;
+        console.log("Request",quickquote);    
+        
+    
+         if (!quickquote) {
+        logger.error('Body Is Invalid');
+        console.log("invalid body ")
+        return res.status(400).json({
+            message: 'Invalid Request !'
+        });
+    
+    }else{
+        
+        logger.fatal('quickquote Request Sucessfull....');
+        godigitquickquote.godigitquickquote(quickquote)
+    
+        .then(result => {
+           
+                res.status(result.status).json({
+                    message: result.message,
+                    response: result.Response
+                })
+            })
+    
+            .catch(err => res.status(err.status).json({
+                message: err.message
+            }));
+    
+        }
+    });  
+    router.post('/godigitcreatequote', (req, res) => {
+        console.log('Haiiiiiii');
+        //console.log("Request: ", req.body.contract);
+        // if (!checkToken(req)) {
+        //     console.log("invalid token")
+        //     return res.status(401).json({
+        //         message: "invalid token"
+        //     })
+        // }
+        logger.fatal('Entering Into godigitcreatequote........');
+       const createquote = req.body;
+       
+        console.log("Request",createquote);
+                
+             if (!createquote) {
+        logger.error('Body Is Invalid');
+        console.log("invalid body ")
+        return res.status(400).json({
+            message: 'Invalid Request !'
+        });
+    
+    }else{
+       
+        logger.fatal('createquote Request Sucessfull....');
+        godigitcreatequote.godigitcreatequote(createquote)
+    
+        .then(result => {
+           
+                res.status(result.status).json({
+                    message: result.message,
+                    response: result.Response
+                })
+            })
+    
+            .catch(err => res.status(err.status).json({
+                message: err.message
+            }));
+    
+        }
+    });
+
+
+
+
+    router.post('/digitgo2wcreatequote', (req, res) => {
+        console.log('Haiiiiiii');
+        //console.log("Request: ", req.body.contract);
+        // if (!checkToken(req)) {
+        //     console.log("invalid token")
+        //     return res.status(401).json({
+        //         message: "invalid token"
+        //     })
+        // }
+        logger.fatal('Entering Into digitgo2wcreatequote........');
+       const createquote = req.body;
+       
+        console.log("Request",createquote);
+                
+             if (!createquote) {
+        logger.error('Body Is Invalid');
+        console.log("invalid body ")
+        return res.status(400).json({
+            message: 'Invalid Request !'
+        });
+    
+    }else{
+       
+        logger.fatal('createquote Request Sucessfull....');
+        digitgo2wcreatequote.digitgo2wcreatequote(createquote)
+    
+        .then(result => {
+           
+                res.status(result.status).json({
+                    message: result.message,
+                    response: result.Response
+                })
+            })
+    
+            .catch(err => res.status(err.status).json({
+                message: err.message
+            }));
+    
+        }
+    });
+
+
+    router.post('/digitgo2wquickquote', (req, res) => {
+        console.log('Haiiiiiii');
+        //console.log("Request: ", req.body.contract);
+        // if (!checkToken(req)) {
+        //     console.log("invalid token")
+        //     return res.status(401).json({
+        //         message: "invalid token"
+        //     })
+        // }
+        logger.fatal('Entering Into digitgo2wquickquote........');
+       const createquote = req.body;
+       
+        console.log("Request",createquote);
+                
+             if (!createquote) {
+        logger.error('Body Is Invalid');
+        console.log("invalid body ")
+        return res.status(400).json({
+            message: 'Invalid Request !'
+        });
+    
+    }else{
+       
+        logger.fatal('quickquote Request Sucessfull....');
+        digitgo2wquickquote.digitgo2wquickquote(createquote)
+    
+        .then(result => {
+           
+                res.status(result.status).json({
+                    message: result.message,
+                    response: result.Response
+                })
+            })
+    
+            .catch(err => res.status(err.status).json({
+                message: err.message
+            }));
+    
+        }
+    });
+
+    
+    
 
     router.post('/gproposalrequest', (req, res) => {
         if (!checkToken(req)) {
@@ -1406,7 +1743,7 @@ module.exports = router => {
 logger.fatal('Entering in Calculate Premium....');
 
     
-        const calculatepremium = req.body.CALCULATEPREMIUMREQUEST;
+        const calculatepremium = req.body. CALCULATEPREMIUMREQUEST;
        
       
        console.log(calculatepremium,"calculatepremium")
@@ -1603,48 +1940,6 @@ logger.fatal('Entering in Calculate Premium....');
         
         .then(result => {
            
-                res.status(result.status).json({
-                    message: result.message,
-                    response: result.Response
-                })
-            })
-    
-            .catch(err => res.status(err.status).json({
-                message: err.message
-            }));
-    
-        }
-    });
-    router.post('/digitgo', (req, res) => {
-        // if (!checkToken(req)) {
-        //     console.log("invalid token")
-        //     return res.status(401).json({
-        //         message: "invalid token"
-        //     })
-        // }
-        
-        logger.fatal('Entering in Brandnewupdatevehicle Rollover');
-        const digital1 = req.body;
-        var digital= JSON.stringify(digital1)
-      
-       console.log(digital,"brandnewupdatevehical")
-      
-        
-        
-    
-         if (!digital) {
-        logger.error('Body is Invalid');
-        console.log(" invalid body ")
-        return res.status(400).json({
-            message: 'Invalid Request !'
-        });
-    
-    }else{
-    
-        digitgo.digitgo(digital)
-        
-        .then(result => {
-           console.log("nghjgjh",result)
                 res.status(result.status).json({
                     message: result.message,
                     response: result.Response
@@ -3261,3 +3556,4 @@ logger.fatal('Entering in Calculate Premium....');
         return result;
     }
 }
+ 
