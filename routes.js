@@ -22,7 +22,8 @@ const nodemailer = require('nodemailer');
 var express = require('express');
 // var parse = require('xml-parser');
 var router = express.Router();
-const log4js = require('./log4js-node/lib/log4js');
+const log4js = require('log4js');
+//const log4js = require('./log4js-node/lib/log4js');
 log4js.configure({
     appenders: { readypolicy: { type: 'file', filename: 'readypolicy.log' } },
     categories: { default: { appenders: ['readypolicy'], level: 'error' } }
@@ -30,7 +31,7 @@ log4js.configure({
 
 const logger = log4js.getLogger('readypolicy');
 
-
+const excelToJson = require('convert-excel-to-json');
   
 const config = require('./config/config.json');
 
@@ -76,6 +77,7 @@ const negotiateClaimFind = require('./functions/negotiateClaimFind');
 const approveClaim = require('./functions/approveClaim');
 const settleClaim = require('./functions/settleClaim');
 const fetchClaimlist = require('./functions/fetchClaimlist');
+const paymentDetails = require('./functions/paymentDetails');
 
 //const godigitquickquote = require('./functions/godigitquickquote');
 const bharathiquickquote = require('./functions/bharathiquickquote');
@@ -3438,6 +3440,29 @@ logger.fatal('Entering in Calculate Premium....');
 
     });
 
+ /* 
+    Royal sundaram payment gateway return response and redirect to UI
+ */ 
+ router.post("/rsReturnURL", (req, res) =>{
+    console.log("payment gateway response: ", req.body);
+    const response = req.body;
+
+        paymentDetails
+            .savePaymentDetails(response)
+            .then(result => {
+                
+                res.redirect('http://localhost:8081/index.html'); //url to UI
+
+
+            })
+            .catch(err => res.status(err.status).json({
+                message: err.message
+            }).json({
+                status: err.status
+            }));
+   
+})
+
     function getUserId(req) {
         const token = req.headers['x-access-token'];
         if (token) {
@@ -3555,5 +3580,31 @@ logger.fatal('Entering in Calculate Premium....');
 
         return result;
     }
+
+/*
+ To get vehicle details dropdownlist from the excel sheet.
+*/
+    router.get('/dropdownList', cors(), (req, res) => {
+        var data ;
+        const result = excelToJson({
+            sourceFile: 'uploads/MMV master 27102017.xlsx',
+        });
+            var lookup = {};
+            var items = result.Sheet1;
+            var final = [];
+
+            for (var item, i = 0; item = items[i++];) {
+                var name = item.E;
+
+                if (!(name in lookup)) {
+                    lookup[name] = 1;
+                    final.push(name);
+                }   
+                console.log("printing unique ",final)
+            }
+
+         res.json(final);
+    });
+
 }
  

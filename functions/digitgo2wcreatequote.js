@@ -5,7 +5,8 @@ var parser = require('xml2json');
 var js2xmlparser = require("js2xmlparser");
 var request = require("request");
 var utf8 = require('utf8');
-const log4js = require('../log4js-node/lib/log4js');
+const log4js = require('log4js');
+//const log4js = require('../log4js-node/lib/log4js');
 log4js.configure({
     appenders: { readypolicy: { type: 'file', filename: 'readypolicy.log' } },
     categories: { default: { appenders: ['readypolicy'], level: 'error' } }
