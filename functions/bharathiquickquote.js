@@ -5,7 +5,7 @@ const stringify = require('xml-stringify');
 
 var js2xmlparser = require("js2xmlparser");
 var jsonxml = require('jsontoxml');
-var bcSdk = require('../fabcar/invoke.js');
+var bcSdk = require('../multichain/invoke.js');
 //var xml2jsparser = require("xml2jsparser")
 var parser = require('xml2json');
 

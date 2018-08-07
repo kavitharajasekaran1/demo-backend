@@ -1,7 +1,7 @@
 'use strict';
 // const bc_client = require('../blockchain_sample_client'); const bcrypt =
 // require('bcryptjs');
-var bcSdk = require('../fabcar/invoke1.js');
+//var bcSdk = require('../fabcar/invoke1.js');
 
 exports.updatetransaction = (policyNumber,transactionString,id) => new Promise((resolve, reject) => {
     const transactiondetails = ({

@@ -6,7 +6,7 @@ var js2xmlparser = require("js2xmlparser");
 var parser = require('xml2json');
 var request = require("request");
 var utf8 = require('utf8');
-var bcSdk = require('../fabcar/query.js');
+var bcSdk = require('../multichain/invoke.js');
 
 
 

@@ -1,7 +1,7 @@
 'use strict';
 
 
-const bcSdk = require('../fabcar/query.js');
+const bcSdk = require('../multichain/query.js');
 
 exports.readRequest = (requestid) => {
     return new Promise((resolve, reject) => {

@@ -3,7 +3,7 @@ var js2xmlparser = require("js2xmlparser");
 var parser = require('xml2json');
 var request = require("request");
 var utf8 = require('utf8');
-var bcSdk = require('../fabcar/invoke.js');
+var bcSdk = require('../multichain/invoke.js');
 const log4js = require('log4js');
 //const log4js = require('../log4js-node/lib/log4js');
 log4js.configure({

@@ -37,28 +37,28 @@ const config = require('./config/config.json');
 const register = require('./functions/register');
 const newlogin = require('./functions/newlogin');
 const login = require('./functions/login');
-const updateprofile = require('./functions/updateprofile');
-const verifyemail = require('./functions/emailverification');
+//const updateprofile = require('./functions/updateprofile');
+//const verifyemail = require('./functions/emailverification');
 const verifyphone = require('./functions/phoneverification');
 const getnewotp = require('./functions/getnewotp');
-const setpassword = require('./functions/setpassword');
+//const setpassword = require('./functions/setpassword');
 const deleteuser = require('./functions/deleteuser');
 const getotpcount = require('./functions/getotpcount');
-const registerpublicadjuster = require('./functions/registerpublicadjuster');
-const publicadjusterList = require('./functions/publicadjusterList');
-const userfullname = require('./functions/userfullname');
+//const registerpublicadjuster = require('./functions/registerpublicadjuster');
+//const publicadjusterList = require('./functions/publicadjusterList');
+//const userfullname = require('./functions/userfullname');
 const User = require('./functions/getUser');
 
 const motorsavepolicy = require('./functions/motorsavepolicy');
-const addPolicy = require('./functions/addPolicy');
+//const addPolicy = require('./functions/addPolicy');
 const motorfetchSavePolicy = require('./functions/motorfetchSavePolicy');
-const motordeletesavepolicy = require('./functions/motordeletesavepolicy');
-const policydetails = require('./functions/policydetails');
-const savetransaction = require('./functions/savetransaction');
-const fetchMotorIssuedPolicy = require('./functions/fetchMotorIssuedPolicy');
-const readRequest = require('./functions/readRequest');
-const readIndex = require('./functions/readIndex');
-const readAllRequest = require('./functions/readAllRequest');
+//const motordeletesavepolicy = require('./functions/motordeletesavepolicy');
+//const policydetails = require('./functions/policydetails');
+ const savetransaction = require('./functions/savetransaction');
+ //const fetchMotorIssuedPolicy = require('./functions/fetchMotorIssuedPolicy');
+// const readRequest = require('./functions/readRequest');
+// const readIndex = require('./functions/readIndex');
+ const readAllRequest = require('./functions/readAllRequest');
 const updatetransaction = require('./functions/updatetransaction');
 const brandnewupdatevehical = require('./functions/brandnewupdatevehical');
 const calculatepremium = require('./functions/calculatepremium');
@@ -66,16 +66,15 @@ const getPolicyinfo = require('./functions/getPolicyinfo');
 const gproposal = require('./functions/gproposal');
 const calculatecarpremium = require('./functions/calculatecarpremium');
 const updatevehicalcardetails = require('./functions/updatevehicaldetails');
-const gproposalcar = require('./functions/gproposalcar');
-const notifyClaim = require('./functions/notifyClaim');
-const createClaim = require('./functions/createClaim');
-const rejectClaim = require('./functions/rejectClaim');
-const examineClaim = require('./functions/examineClaim');
-const negotiateClaim = require('./functions/negotiateClaim');
-const negotiateClaimFind = require('./functions/negotiateClaimFind');
-const approveClaim = require('./functions/approveClaim');
-const settleClaim = require('./functions/settleClaim');
-const fetchClaimlist = require('./functions/fetchClaimlist');
+ const gproposalcar = require('./functions/gproposalcar');
+//  const createClaim = require('./functions/createClaim');
+// const rejectClaim = require('./functions/rejectClaim');
+// const examineClaim = require('./functions/examineClaim');
+// const negotiateClaim = require('./functions/negotiateClaim');
+// const negotiateClaimFind = require('./functions/negotiateClaimFind');
+// const approveClaim = require('./functions/approveClaim');
+// const settleClaim = require('./functions/settleClaim');
+// const fetchClaimlist = require('./functions/fetchClaimlist');
 
 //const godigitquickquote = require('./functions/godigitquickquote');
 const bharathiquickquote = require('./functions/bharathiquickquote');
@@ -337,49 +336,49 @@ module.exports = router => {
         }
     });
 
-    router.post('/UpdateProfile', cors(), (req, res) => {
+    // router.post('/UpdateProfile', cors(), (req, res) => {
 
-        const email = req.body.email;
-        console.log(email);
-        var emailtosend = email;
-        console.log(emailtosend);
-        const password = req.body.password;
-        console.log(password);
+    //     const email = req.body.email;
+    //     console.log(email);
+    //     var emailtosend = email;
+    //     console.log(emailtosend);
+    //     const password = req.body.password;
+    //     console.log(password);
 
-        const userObject = req.body.userObject;
-        console.log(userObject);
+    //     const userObject = req.body.userObject;
+    //     console.log(userObject);
 
-        const usertype = req.body.usertype;
-        console.log(usertype);
+    //     const usertype = req.body.usertype;
+    //     console.log(usertype);
 
-        if (!email || !password || !usertype) {
+    //     if (!email || !password || !usertype) {
 
-            res
-                .status(400)
-                .json({
-                    message: 'Invalid Request !'
-                });
+    //         res
+    //             .status(400)
+    //             .json({
+    //                 message: 'Invalid Request !'
+    //             });
 
-        } else {
+    //     } else {
 
-            updateprofile
-                .updateprofile(email, password, userObject, usertype)
-                .then(result => {
+    //         updateprofile
+    //             .updateprofile(email, password, userObject, usertype)
+    //             .then(result => {
 
-                    res
-                        .status(result.status)
-                        .json({
-                            message: result.message
-                        });
+    //                 res
+    //                     .status(result.status)
+    //                     .json({
+    //                         message: result.message
+    //                     });
 
-                })
-                .catch(err => res.status(err.status).json({
-                    message: err.message
-                }).json({
-                    status: err.status
-                }));
-        }
-    });
+    //             })
+    //             .catch(err => res.status(err.status).json({
+    //                 message: err.message
+    //             }).json({
+    //                 status: err.status
+    //             }));
+    //     }
+    // });
 
     router.get("/email/verify", cors(), (req, res, next) => {
         var status;
@@ -1421,68 +1420,14 @@ console.log(enddatetemp,"kavitha")
 
 
     
-    // router.post('/bharathiquickquote', (req, res) => {
-        // if (!checkToken(req)) {
-        //     console.log("invalid token")
-        //     return res.status(401).json({
-        //         message: "invalid token"
-        //     })
-        // }
-
-        // console.log("hiiiii")
-        // logger.fatal('Hiiiiiiiiiiii');
-        // logger.fatal('Entering Into Calculate Premium......');
-      //  const bharathirequest = req.body;
-       // logger.fatal(bharathirequest);
-      
-      // console.log(bharathirequest,"premiumrequest")
-      
-//        var fs = require('fs'),
-//     xml2js = require('xml2js');
- 
-//       var parser = new xml2js.Parser();
-//    var data = fs.readFile(__dirname + '/raja.xml');
-//     var result = parser.parseString(data);
-//     condole.log("Hii2")
-//         const bharathirequest = result ;
-//         console.log("first " , bharathirequest);
-//         console.log('Done');
-
-  
-        
     
-//          if (!bharathirequest) {
-//         logger.error('Body Is Invalid');
-//         console.log("invalid body ")
-//         return res.status(400).json({
-//             message: 'Invalid Request !'
-//         });
-    
-//     }else{
-//         logger.fatal('Premium Request Sucessfull....');
-//         bharathiquickquote.bharathiquickquote(bharathirequest)
-    
-//         .then(result => {
-           
-//                 res.status(result.status).json({
-//                     message: result.message,
-//                     response: result.Response
-//                 })
-//             })
-    
-//             .catch(err => res.status(err.status).json({
-//                 message: err.message
-//             }));
-    
-//         }
-//     });
     router.post('/calculatepremium', (req, res) => {
-        // if (!checkToken(req)) {
-        //     console.log("invalid token")
-        //     return res.status(401).json({
-        //         message: "invalid token"
-        //     })
-        // }
+        if (!checkToken(req)) {
+            console.log("invalid token")
+            return res.status(401).json({
+                message: "invalid token"
+            })
+        }
         logger.fatal('Entering Into Calculate Premium......');
         const premiumrequest = req.body.CALCULATEPREMIUMREQUEST;
        
@@ -1522,12 +1467,12 @@ console.log(enddatetemp,"kavitha")
     
     router.post('/godigitquickquote', (req, res) => {
         console.log('Haiiiiiii');
-        // if (!checkToken(req)) {
-        //     console.log("invalid token")
-        //     return res.status(401).json({
-        //         message: "invalid token"
-        //     })
-        // }
+        if (!checkToken(req)) {
+            console.log("invalid token")
+            return res.status(401).json({
+                message: "invalid token"
+            })
+        }
      
         logger.fatal('Entering Into godigitcreatequote........');
        const quickquote = req.body;
@@ -1606,13 +1551,12 @@ console.log(enddatetemp,"kavitha")
 
     router.post('/digitgo2wcreatequote', (req, res) => {
         console.log('Haiiiiiii');
-        //console.log("Request: ", req.body.contract);
-        // if (!checkToken(req)) {
-        //     console.log("invalid token")
-        //     return res.status(401).json({
-        //         message: "invalid token"
-        //     })
-        // }
+        if (!checkToken(req)) {
+            console.log("invalid token")
+            return res.status(401).json({
+                message: "invalid token"
+            })
+        }
         logger.fatal('Entering Into digitgo2wcreatequote........');
        const createquote = req.body;
        
@@ -2690,691 +2634,7 @@ logger.fatal('Entering in Calculate Premium....');
 
     });
 
-    router.post('/negotiateClaim', cors(), (req, res) => {
 
-        const userid = getUserId(req)
-        const Negotiations = req.body.transaction;
-        const phonetosend = req.body.phone;
-        console.log(phonetosend);
-        const emailtosend = req.body.email;
-        console.log(emailtosend);
-        var messagetosend = 'Thank you for choosing HDFC Ergo to insure your Motor. Please wait for 4-5 worki' +
-            'ng days to receive your copy of the Insurance Policy Document';
-
-        const policyNumber = Negotiations.policyNumber;
-        const claim_no = Negotiations.claim_no;
-        const claimNegotiatedDate = new Date();
-        const status = "Claim Examined";
-
-        Negotiations.claimNegotiatedDate = claimNegotiatedDate;
-        Negotiations.status = status;
-        Negotiations.userid = userid;
-        console.log("NegotiateClaim" + JSON.stringify(Negotiations));
-        const transactionString = JSON.stringify(Negotiations);
-        console.log("transactionString" + transactionString);
-        if (!userid || !userid.trim()) {
-
-            res
-                .status(400)
-                .json({
-                    message: 'Invalid Request !'
-                });
-        } else {
-
-            var firstMethod = function() {
-                var promise = new Promise(function(resolve, reject) {
-                    negotiateClaim
-                        .negotiateClaim(claim_no, Negotiations)
-                        .then(result => {
-                            var message = result.message
-                            console.log("message" + message);
-                            resolve(message);
-
-                        })
-                        .catch(err => res.status(err.status).json({
-                            message: err.message
-                        }));
-                });
-                return promise;
-            };
-
-            var secondMethod = function() {
-
-                updatetransaction
-                    .updatetransaction(policyNumber, transactionString, userid)
-                    .then((result) => {
-                        if (result !== null && result !== '') {
-                            var mailOptions = {
-                                transport: transporter,
-                                from: '"Marin Service"<vikram.viswanathan@rapidqube.com>',
-                                to: emailtosend,
-                                subject: 'Policy Issue Notification',
-
-                                html: "Hello,<br> Thank you for choosing HDFC Ergo to insure your Motor. Please wait fo" +
-                                    "r 4-5 working days to receive your copy of the Insurance Policy Document<br>"
-                            };
-                            transporter.sendMail(mailOptions, (error, info) => {
-                                if (error) {}
-                            });
-                            // nexmo     .message     .sendSms('919768135452', phonetosend, messagetosend, {
-                            //         type: 'unicode'     }, (err, responseData) => {         if
-                            // (responseData) {             console.log(responseData)         }     });
-
-                            res
-                                .status(200)
-                                .json({
-                                    "message": result.message,
-                                    "status": "success"
-                                });
-                        }
-
-                    })
-                    .catch(err => res.status(err.status).json({
-                        message: err.message
-                    }));
-
-            };
-            firstMethod().then(secondMethod);
-        }
-
-
-    });
-
-    router.post('/approveClaim', cors(), (req, res) => {
-        const userid = getUserId(req)
-        const ApproveClaim = req.body.transaction;
-        const phonetosend = req.body.phone;
-        console.log(phonetosend);
-        const emailtosend = req.body.email;
-        console.log(emailtosend);
-        var messagetosend = 'Thank you for choosing HDFC Ergo to insure your Motor. Please wait for 4-5 worki' +
-            'ng days to receive your copy of the Insurance Policy Document';
-
-        const policyNumber = ApproveClaim.policyNumber;
-        const claim_no = ApproveClaim.claim_no;
-        const claimApprovedDate = new Date();
-        const status = "Approved";
-
-        ApproveClaim.claimApprovedDate = claimApprovedDate;
-        ApproveClaim.status = status;
-        ApproveClaim.ClaimAdjusterId = userid;
-        console.log("ApproveClaim" + JSON.stringify(ApproveClaim));
-        var transactionString;
-
-        if (!userid || !userid.trim()) {
-
-            res
-                .status(400)
-                .json({
-                    message: 'Invalid Request !'
-                });
-        } else {
-
-            var firstMethod = function() {
-                var promise = new Promise(function(resolve, reject) {
-                    negotiateClaimFind
-                        .negotiateClaimFind(claim_no)
-                        .then(result => {
-                            var negotiationAmount = result.negotiationAmount
-                            ApproveClaim.ApprovedAmount = negotiationAmount;
-                            transactionString = JSON.stringify(ApproveClaim);
-                            resolve(negotiationAmount);
-
-                        })
-                        .catch(err => res.status(err.status).json({
-                            message: err.message
-                        }));
-                });
-                return promise;
-            };
-
-            var secondMethod = function() {
-                var promise = new Promise(function(resolve, reject) {
-                    approveClaim
-                        .approveClaim(claim_no, ApproveClaim)
-                        .then(result => {
-                            var message = result.message
-                            console.log("message" + message);
-                            resolve(message);
-
-                        })
-                        .catch(err => res.status(err.status).json({
-                            message: err.message
-                        }));
-                });
-                return promise;
-            };
-
-            var thirdMethod = function() {
-
-                updatetransaction
-                    .updatetransaction(policyNumber, transactionString, userid)
-                    .then((result) => {
-                        if (result !== null && result !== '') {
-                            var mailOptions = {
-                                transport: transporter,
-                                from: '"Marin Service"<vikram.viswanathan@rapidqube.com>',
-                                to: emailtosend,
-                                subject: 'Policy Issue Notification',
-
-                                html: "Hello,<br> Thank you for choosing HDFC Ergo to insure your Motor. Please wait fo" +
-                                    "r 4-5 working days to receive your copy of the Insurance Policy Document<br>"
-                            };
-                            transporter.sendMail(mailOptions, (error, info) => {
-                                if (error) {}
-                            });
-                            // nexmo     .message     .sendSms('919768135452', phonetosend, messagetosend, {
-                            //         type: 'unicode'     }, (err, responseData) => {         if
-                            // (responseData) {             console.log(responseData)         }     });
-
-                            res
-                                .status(200)
-                                .json({
-                                    "message": result.message,
-                                    "status": "success"
-                                });
-                        }
-
-                    })
-                    .catch(err => res.status(err.status).json({
-                        message: err.message
-                    }));
-
-            };
-            firstMethod()
-                .then(secondMethod)
-                .then(thirdMethod);
-        }
-
-
-    });
-
-
-
-    router.post('/settleClaim', cors(), (req, res) => {
-
-        const userid = getUserId(req)
-        const SettleClaim = req.body.transaction;
-        const phonetosend = req.body.phone;
-        console.log(phonetosend);
-        const emailtosend = req.body.email;
-        console.log(emailtosend);
-        var messagetosend = 'Thank you for choosing HDFC Ergo to insure your Motor. Please wait for 4-5 working days to receive your copy of the Insurance Policy Document';
-
-        const policyNumber = SettleClaim.policyNumber;
-        const claim_no = SettleClaim.claim_no;
-        const claimSettledDate = new Date();
-        const status = "Settled";
-
-        SettleClaim.claimSettledDate = claimSettledDate;
-        SettleClaim.status = status;
-        SettleClaim.ClaimAdjusterId = userid;
-        console.log("SettleClaim" + JSON.stringify(SettleClaim));
-        const transactionString = JSON.stringify(SettleClaim);
-        console.log("transactionString" + transactionString);
-        if (!userid || !userid.trim()) {
-
-            res
-                .status(400)
-                .json({
-                    message: 'Invalid Request !'
-                });
-        } else {
-
-            var firstMethod = function() {
-                var promise = new Promise(function(resolve, reject) {
-                    settleClaim
-                        .settleClaim(claim_no, SettleClaim)
-                        .then(result => {
-                            var message = result.message
-                            console.log("message" + message);
-                            resolve(message);
-
-                        })
-                        .catch(err => res.status(err.status).json({
-                            message: err.message
-                        }));
-                });
-                return promise;
-            };
-
-            var secondMethod = function() {
-
-                updatetransaction
-                    .updatetransaction(policyNumber, transactionString, userid)
-                    .then((result) => {
-                        if (result !== null && result !== '') {
-                            var mailOptions = {
-                                transport: transporter,
-                                from: '"Marin Service"<vikram.viswanathan@rapidqube.com>',
-                                to: emailtosend,
-                                subject: 'Policy Issue Notification',
-
-                                html: "Hello,<br> Thank you for choosing HDFC Ergo to insure your Motor. Please wait fo" +
-                                    "r 4-5 working days to receive your copy of the Insurance Policy Document<br>"
-                            };
-                            transporter.sendMail(mailOptions, (error, info) => {
-                                if (error) {}
-                            });
-                            // nexmo     .message     .sendSms('919768135452', phonetosend, messagetosend, {
-                            //         type: 'unicode'     }, (err, responseData) => {         if
-                            // (responseData) {             console.log(responseData)         }     });
-
-                            res
-                                .status(200)
-                                .json({
-                                    "message": result.message,
-                                    "status": "success"
-                                });
-                        }
-
-                    })
-                    .catch(err => res.status(err.status).json({
-                        message: err.message
-                    }));
-
-            };
-            firstMethod().then(secondMethod);
-        }
-
-    });
-
-    router.get('/claim/UserClaims', function(req, res) {
-
-        var filteredclaims = [];
-        var status = [];
-        var daysDifference = [];
-        var averagedays,
-            longest,
-            shortest;
-        const id = getUserId(req)
-        console.log("id" + id);
-        if (1 == 1) {
-
-            fetchClaimlist
-                .fetch_Claim_list({
-                    " user ": " risabh ",
-                    " getclaims ": " getclaims "
-                })
-                .then(function(result) {
-                    console.log("result array data" + result.claimlist.claimlist);
-
-                    var filteredclaims = [];
-                    var status = [];
-                    var daysDifference = [];
-                    console.log("length of result array" + result.claimlist.claimlist.length);
-
-                    for (let i = 0; i < result.claimlist.claimlist.length; i++) {
-                        console.log("id" + id);
-                        console.log("userid" + result.claimlist.claimlist[i].insuredid);
-                        if (result.claimlist.claimlist[i].insuredid === id) {
-                            console.log("userid" + result.claimlist.claimlist[i].insuredid);
-                            filteredclaims.push(result.claimlist.claimlist[i]);
-                            status.push(result.claimlist.claimlist[i].status);
-                            var countstatus = count(status);
-                            console.log("countstatus" + countstatus);
-                            console.log("filteredclaims array " + filteredclaims);
-                            if (result.claimlist.claimlist[i].claimsettleddate !== "0001-01-01T00:00:00Z") {
-
-                                var date1 = new Date(result.claimlist.claimlist[i].claimnotifieddate);
-                                console.log("date1" + date1);
-                                var date2 = new Date(result.claimlist.claimlist[i].claimsettleddate);
-                                console.log("date1" + date2);
-                                var timeDiff = Math.abs(date2.getTime() - date1.getTime());
-                                var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
-                                console.log("diffDays" + diffDays);
-                                daysDifference.push(diffDays)
-                                console.log("daysDifference" + daysDifference);
-                                var total = 0;
-                                for (let i = 0; i < daysDifference.length; i++) {
-                                    total += daysDifference[i];
-                                }
-                                var averagedays = total / daysDifference.length;
-                                var longest = Math
-                                    .max
-                                    .apply(null, daysDifference)
-                                var shortest = Math
-                                    .min
-                                    .apply(null, daysDifference)
-
-                            }
-
-                        }
-                    }
-                    return res.json({
-                        message: "user claims found",
-                        userClaims: filteredclaims,
-                        statuscount: countstatus,
-                        Average: averagedays,
-                        Longest: longest,
-                        Shortest: shortest
-                    });
-                })
-                .catch(err => res.status(err.status).json({
-                    message: err.message
-                }));
-
-        } else {
-
-            return res
-                .status(401)
-                .json({
-                    message: 'cant fetch data !'
-                });
-        }
-    });
-
-    router.get('/claim/ExaminerClaims', (req, res) => {
-
-        const id = getUserId(req)
-
-        console.log("id" + id);
-        if (1 == 1) {
-
-            fetchClaimlist
-                .fetch_Claim_list({
-                    "user": "risabh",
-                    "getclaims": "getclaims"
-                })
-                .then(function(result) {
-                    console.log("result array data" + result.claimlist.claimlist);
-
-                    var filteredclaims = [];
-
-                    var status = [];
-                    var daysDifference = [];
-                    var countstatus
-                    console.log("length of result array" + result.claimlist.claimlist.length);
-
-                    for (let i = 0; i < result.claimlist.claimlist.length; i++) {
-                        console.log("id" + id);
-                        console.log("userid" + result.claimlist.claimlist[i].userid);
-                        if (id === id) {
-
-                            if (result.claimlist.claimlist[i].status == "Submitted") {
-                                filteredclaims.push(result.claimlist.claimlist[i]);
-                                status.push(result.claimlist.claimlist[i].status);
-                                countstatus = count(status);
-
-                                console.log("countstatus" + countstatus);
-                                console.log("filteredclaims array " + filteredclaims);
-                                for (let i = 0; i < filteredclaims.length; i++) {
-                                    if (filteredclaims[i].claimsettleddate !== "0001-01-01T00:00:00Z") {
-
-                                        var date1 = new Date(filteredclaims[i].claimnotifieddate);
-                                        console.log("date1" + date1);
-                                        var date2 = new Date(filteredclaims[i].claimsettleddate);
-                                        console.log("date1" + date2);
-                                        var timeDiff = Math.abs(date2.getTime() - date1.getTime());
-                                        var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
-                                        console.log("diffDays" + diffDays);
-                                        daysDifference.push(diffDays)
-                                        console.log("daysDifference" + daysDifference);
-                                        var total = 0;
-                                        for (let i = 0; i < daysDifference.length; i++) {
-                                            total += daysDifference[i];
-                                        }
-                                        var averagedays = total / daysDifference.length;
-                                        var longest = Math
-                                            .max
-                                            .apply(null, daysDifference)
-                                        var shortest = Math
-                                            .min
-                                            .apply(null, daysDifference)
-
-                                    }
-                                }
-
-                            }
-                            if (result.claimlist.claimlist[i].status == "Notified") {
-                                status.push(result.claimlist.claimlist[i].status);
-                                countstatus = count(status);
-                            }
-                            if (result.claimlist.claimlist[i].examinerid === id) {
-                                status.push(result.claimlist.claimlist[i].status);
-                                countstatus = count(status);
-
-                            }
-                        }
-                    }
-                    return res.json({
-                        message: "user claims found",
-                        userClaims: filteredclaims,
-                        statuscount: countstatus,
-                        Average: averagedays,
-                        Longest: longest,
-                        Shortest: shortest
-
-                    });
-                })
-                .catch(err => res.status(err.status).json({
-                    message: err.message
-                }));
-
-        } else {
-
-            return res
-                .status(401)
-                .json({
-                    message: 'cant fetch data !'
-                });
-        }
-    });
-
-    router.get('/claim/ClaimAdjusterClaims', (req, res) => {
-
-        const id = getUserId(req)
-
-        console.log("id" + id);
-        if (1 == 1) {
-
-            fetchClaimlist
-                .fetch_Claim_list({
-                    "user": "risabh",
-                    "getclaims": "getclaims"
-                })
-                .then(function(result) {
-                    console.log("result array data" + result.claimlist.claimlist);
-
-                    var filteredclaims = [];
-
-                    var status = [];
-                    var daysDifference = [];
-                    var countstatus
-                    console.log("length of result array" + result.claimlist.claimlist.length);
-
-                    for (let i = 0; i < result.claimlist.claimlist.length; i++) {
-                        console.log("id" + id);
-                        console.log("userid" + result.claimlist.claimlist[i].userid);
-                        if (id === id) {
-
-                            if (result.claimlist.claimlist[i].status == "Examined" || result.claimlist.claimlist[i].status == "Validated" || result.claimlist.claimlist[i].status == "Approved" || result.claimlist.claimlist[i].status == "Settled") {
-                                filteredclaims.push(result.claimlist.claimlist[i]);
-
-                                if (result.claimlist.claimlist[i].status == "Examined") {
-                                    status.push(result.claimlist.claimlist[i].status);
-                                } else if (result.claimlist.claimlist[i].status == "Validated") {
-                                    status.push(result.claimlist.claimlist[i].status);
-                                } else if (result.claimlist.claimlist[i].status == "Approved") {
-                                    status.push(result.claimlist.claimlist[i].status);
-                                } else if (result.claimlist.claimlist[i].status == "Settled") {
-                                    status.push(result.claimlist.claimlist[i].status);
-                                }
-
-                                countstatus = count(status);
-
-                                console.log("countstatus" + countstatus);
-                                console.log("filteredclaims array " + filteredclaims);
-                                for (let i = 0; i < filteredclaims.length; i++) {
-                                    if (filteredclaims[i].claimsettleddate !== "0001-01-01T00:00:00Z") {
-
-                                        var date1 = new Date(filteredclaims[i].claimnotifieddate);
-                                        console.log("date1" + date1);
-                                        var date2 = new Date(filteredclaims[i].claimsettleddate);
-                                        console.log("date1" + date2);
-                                        var timeDiff = Math.abs(date2.getTime() - date1.getTime());
-                                        var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
-                                        console.log("diffDays" + diffDays);
-                                        daysDifference.push(diffDays)
-                                        console.log("daysDifference" + daysDifference);
-                                        var total = 0;
-                                        for (let i = 0; i < daysDifference.length; i++) {
-                                            total += daysDifference[i];
-                                        }
-                                        var averagedays = total / daysDifference.length;
-                                        var longest = Math
-                                            .max
-                                            .apply(null, daysDifference)
-                                        var shortest = Math
-                                            .min
-                                            .apply(null, daysDifference)
-
-                                    }
-                                }
-
-                            }
-
-                            if (result.claimlist.claimlist[i].status == "Notified" || result.claimlist.claimlist[i].status == "Submitted") {
-                                status.push(result.claimlist.claimlist[i].status);
-                                countstatus = count(status);
-                            }
-
-                        }
-                    }
-                    return res.json({
-                        message: "user claims found",
-                        userClaims: filteredclaims,
-                        statuscount: countstatus,
-                        Average: averagedays,
-                        Longest: longest,
-                        Shortest: shortest
-
-                    });
-                })
-                .catch(err => res.status(err.status).json({
-                    message: err.message
-                }));
-
-        } else {
-
-            return res
-                .status(401)
-                .json({
-                    message: 'cant fetch data !'
-                });
-        }
-    });
-
-    router.get('/claim/PublicAdjusterClaims', (req, res) => {
-
-        const id = getUserId(req)
-
-        console.log("id" + id);
-        if (1 == 1) {
-
-            fetchClaimlist
-                .fetch_Claim_list({
-                    "user": "risabh",
-                    "getclaims": "getclaims"
-                })
-                .then(function(result) {
-                    console.log("result array data" + result.claimlist.claimlist);
-
-                    var filteredclaims = [];
-
-                    var status = [];
-                    var status1 = [];
-                    var daysDifference = [];
-                    var countstatus
-                    var countstatus1
-                    console.log("length of result array" + result.claimlist.claimlist.length);
-
-                    for (let i = 0; i < result.claimlist.claimlist.length; i++) {
-                        console.log("id" + id);
-                        console.log("userid" + result.claimlist.claimlist[i].userid);
-                        if (result.claimlist.claimlist[i].publicadjusterid === id) {
-
-                            if (result.claimlist.claimlist[i].status == "Validated" || result.claimlist.claimlist[i].status == "Approved" || result.claimlist.claimlist[i].status == "Settled") {
-                                filteredclaims.push(result.claimlist.claimlist[i]);
-                                if (result.claimlist.claimlist[i].status == "Validated") {
-                                    status1.push(result.claimlist.claimlist[i].status);
-                                    countstatus1 = count(status1);
-                                } else if (result.claimlist.claimlist[i].status == "Approved") {
-                                    status.push(result.claimlist.claimlist[i].status);
-                                } else if (result.claimlist.claimlist[i].status == "Settled") {
-                                    status.push(result.claimlist.claimlist[i].status);
-                                }
-
-                                countstatus = count(status);
-
-                                console.log("filteredclaims array " + filteredclaims);
-                                for (let i = 0; i < filteredclaims.length; i++) {
-                                    if (filteredclaims[i].claimsettleddate !== "0001-01-01T00:00:00Z") {
-
-                                        var date1 = new Date(filteredclaims[i].claimnotifieddate);
-                                        console.log("date1" + date1);
-                                        var date2 = new Date(filteredclaims[i].claimsettleddate);
-                                        console.log("date1" + date2);
-                                        var timeDiff = Math.abs(date2.getTime() - date1.getTime());
-                                        var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
-                                        console.log("diffDays" + diffDays);
-                                        daysDifference.push(diffDays)
-                                        console.log("daysDifference" + daysDifference);
-                                        var total = 0;
-                                        for (let i = 0; i < daysDifference.length; i++) {
-                                            total += daysDifference[i];
-                                        }
-                                        var averagedays = total / daysDifference.length;
-                                        var longest = Math
-                                            .max
-                                            .apply(null, daysDifference)
-                                        var shortest = Math
-                                            .min
-                                            .apply(null, daysDifference)
-
-                                    }
-                                }
-
-                            }
-
-                            if (result.claimlist.claimlist[i].status == "Notified" || result.claimlist.claimlist[i].status == "Submitted" || result.claimlist.claimlist[i].status == "Examined") {
-                                status.push(result.claimlist.claimlist[i].status);
-                                countstatus = count(status);
-                            }
-                        }
-                    }
-
-                    return res.json({
-                        message: "user claims found",
-                        userClaims: filteredclaims,
-                        statuscount: countstatus,
-                        statuscount1: countstatus1,
-                        Average: averagedays,
-                        Longest: longest,
-                        Shortest: shortest
-
-                    });
-
-                })
-                .catch(err => res.status(err.status).json({
-                    message: err.message
-                }));
-
-        } else {
-
-            return res
-                .status(401)
-                .json({
-                    message: 'cant fetch data !'
-                });
-        }
-    });
-
-    cloudinary.config({
-        cloud_name: 'diyzkcsmp',
-        api_key: '188595956976777',
-        api_secret: 'F7ajPhx0uHdohqfbjq2ykBZcMiw'
-    });
 
     router.post('/UploadDocs', multipartMiddleware, function(req, res, next) {
         const id = getUserId(req)

@@ -1,5 +1,5 @@
 var js2xmlparser = require("js2xmlparser");
-var bcSdk = require('../fabcar/invoke.js');
+var bcSdk = require('../multichain/invoke.js');
 //var xml2jsparser = require("xml2jsparser")
 var parser = require('xml2json');
 var js2xmlparser = require("js2xmlparser");
@@ -42,20 +42,15 @@ request.post({
 
 function(error, response, body){
     logger.fatal('Successfull Taking Response from godigitcreatequote API.....');
-  //  console.log("status",response.StatusCode);
     console.log("body",body);
     console.log(error);
-    // console.log(xml2jsparser.parse("CALCULATEPREMIUMREQUEST", body))
-    
-    //var json = parser.toJson(body);
+   
     var json1 = JSON.parse(body);
-    // console.log("json1",json1);
     var data =  JSON.stringify(json1);
     console.log("data", data)
     
     console.log("kavi",json1.error.errorCode);
-    // console.log("data",data.error.errorCode);
-    // console.log(body.errorCode);
+    
     var status = json1.error.errorCode;
     console.log("status---->",status)
     if (status == 0){
