@@ -67,30 +67,17 @@ const getPolicyinfo = require('./functions/getPolicyinfo');
 const gproposal = require('./functions/gproposal');
 const calculatecarpremium = require('./functions/calculatecarpremium');
 const updatevehicalcardetails = require('./functions/updatevehicaldetails');
-<<<<<<< HEAD
- const gproposalcar = require('./functions/gproposalcar');
-//  const createClaim = require('./functions/createClaim');
-// const rejectClaim = require('./functions/rejectClaim');
-// const examineClaim = require('./functions/examineClaim');
-// const negotiateClaim = require('./functions/negotiateClaim');
-// const negotiateClaimFind = require('./functions/negotiateClaimFind');
-// const approveClaim = require('./functions/approveClaim');
-// const settleClaim = require('./functions/settleClaim');
-// const fetchClaimlist = require('./functions/fetchClaimlist');
-=======
 const gproposalcar = require('./functions/gproposalcar');
-const notifyClaim = require('./functions/notifyClaim');
-const createClaim = require('./functions/createClaim');
+//const notifyClaim = require('./functions/notifyClaim');
+//const createClaim = require('./functions/createClaim');
 const rejectClaim = require('./functions/rejectClaim');
-const examineClaim = require('./functions/examineClaim');
-const negotiateClaim = require('./functions/negotiateClaim');
-const negotiateClaimFind = require('./functions/negotiateClaimFind');
-const approveClaim = require('./functions/approveClaim');
-const settleClaim = require('./functions/settleClaim');
-const fetchClaimlist = require('./functions/fetchClaimlist');
+//const examineClaim = require('./functions/examineClaim');
+//const negotiateClaim = require('./functions/negotiateClaim');
+//const negotiateClaimFind = require('./functions/negotiateClaimFind');
+//const approveClaim = require('./functions/approveClaim');
+//const settleClaim = require('./functions/settleClaim');
+//const fetchClaimlist = require('./functions/fetchClaimlist');
 const paymentDetails = require('./functions/paymentDetails');
->>>>>>> a340acc08de3cf32f8fc4f87c31cde1fb41260e1
-
 //const godigitquickquote = require('./functions/godigitquickquote');
 const bharathiquickquote = require('./functions/bharathiquickquote');
 const bharathiproposal = require('./functions/bharathiproposal');
