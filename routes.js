@@ -83,7 +83,7 @@ const bharathiquickquote = require('./functions/bharathiquickquote');
 const bharathiproposal = require('./functions/bharathiproposal');
 const digitgo2wcreatequote = require('./functions/digitgo2wcreatequote');
 const digitgo2wquickquote = require('./functions/digitgo2wquickquote');
-
+const digitgoPaymentGateway = require('./functions/digitgoPaymentGateway');
 //const godigitcreatequote = require('./functions/godigitcreatequote');
 var startdatetemp;
 var enddatetemp;
@@ -1633,7 +1633,31 @@ console.log(enddatetemp,"kavitha")
         }
     });
 
+    /**
+     * @description : Digitgo PaymentGateway Functionality
+     */
+    router.post('/digitgoPaymentGateway', (req, res) => {
+
+        var data = req.body;
+        console.log("data ::",data);
+
+       
+        digitgoPaymentGateway.digitgoPaymentGateway(data)
     
+        .then(result => {
+           
+                res.status(result.status).json({
+                    message: result.message,
+                    response: result.Response
+                })
+                //res.redirect("'"+result.Response+"'");
+            })
+    
+            .catch(err => res.status(err.status).json({
+                message: err.message
+            }));
+    
+    })
     
 
     router.post('/gproposalrequest', (req, res) => {
