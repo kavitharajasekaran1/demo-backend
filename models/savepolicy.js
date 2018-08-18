@@ -23,6 +23,8 @@ const policySchema = mongoose.Schema({
 });
 
 mongoose.Promise = global.Promise;
-mongoose.connect('mongodb://rpqb:rpqb123@ds131583.mlab.com:31583/digitalid');
+mongoose.connect('mongodb://rpqb:rpqb123@ds131583.mlab.com:31583/digitalid', {
+    useMongoClient: true
+});
 
 module.exports = mongoose.model('savepolicy', policySchema);

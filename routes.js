@@ -20,7 +20,6 @@ var multipart = require('connect-multiparty');
 var multipartMiddleware = multipart();
 const nodemailer = require('nodemailer');
 var express = require('express');
-// var parse = require('xml-parser');
 var router = express.Router();
 const log4js = require('log4js');
 //const log4js = require('./log4js-node/lib/log4js');
@@ -38,27 +37,19 @@ const config = require('./config/config.json');
 const register = require('./functions/register');
 const newlogin = require('./functions/newlogin');
 const login = require('./functions/login');
-//const updateprofile = require('./functions/updateprofile');
-//const verifyemail = require('./functions/emailverification');
+
 const verifyphone = require('./functions/phoneverification');
 const getnewotp = require('./functions/getnewotp');
-//const setpassword = require('./functions/setpassword');
 const deleteuser = require('./functions/deleteuser');
 const getotpcount = require('./functions/getotpcount');
-//const registerpublicadjuster = require('./functions/registerpublicadjuster');
-//const publicadjusterList = require('./functions/publicadjusterList');
-//const userfullname = require('./functions/userfullname');
+
 const User = require('./functions/getUser');
 
 const motorsavepolicy = require('./functions/motorsavepolicy');
-//const addPolicy = require('./functions/addPolicy');
 const motorfetchSavePolicy = require('./functions/motorfetchSavePolicy');
-//const motordeletesavepolicy = require('./functions/motordeletesavepolicy');
-//const policydetails = require('./functions/policydetails');
+
  const savetransaction = require('./functions/savetransaction');
- //const fetchMotorIssuedPolicy = require('./functions/fetchMotorIssuedPolicy');
-// const readRequest = require('./functions/readRequest');
-// const readIndex = require('./functions/readIndex');
+ 
  const readAllRequest = require('./functions/readAllRequest');
 const updatetransaction = require('./functions/updatetransaction');
 const brandnewupdatevehical = require('./functions/brandnewupdatevehical');
@@ -68,23 +59,15 @@ const gproposal = require('./functions/gproposal');
 const calculatecarpremium = require('./functions/calculatecarpremium');
 const updatevehicalcardetails = require('./functions/updatevehicaldetails');
 const gproposalcar = require('./functions/gproposalcar');
-//const notifyClaim = require('./functions/notifyClaim');
-//const createClaim = require('./functions/createClaim');
-const rejectClaim = require('./functions/rejectClaim');
-//const examineClaim = require('./functions/examineClaim');
-//const negotiateClaim = require('./functions/negotiateClaim');
-//const negotiateClaimFind = require('./functions/negotiateClaimFind');
-//const approveClaim = require('./functions/approveClaim');
-//const settleClaim = require('./functions/settleClaim');
-//const fetchClaimlist = require('./functions/fetchClaimlist');
+
 const paymentDetails = require('./functions/paymentDetails');
-//const godigitquickquote = require('./functions/godigitquickquote');
 const bharathiquickquote = require('./functions/bharathiquickquote');
 const bharathiproposal = require('./functions/bharathiproposal');
 const digitgo2wcreatequote = require('./functions/digitgo2wcreatequote');
 const digitgo2wquickquote = require('./functions/digitgo2wquickquote');
+// const royalmasterdetails =require('./functions/royalmasterdetails');
 
-//const godigitcreatequote = require('./functions/godigitcreatequote');
+
 var startdatetemp;
 var enddatetemp;
 
@@ -183,15 +166,7 @@ module.exports = router => {
 
                     
                     console.log(token,"token")
-                    // nexmo
-                    //     .message
-                    //     .sendSms('919768135452', phonetosend, otptosend, {
-                    //         type: 'unicode'
-                    //     }, (err, responseData) => {
-                    //         if (responseData) {
-                    //             console.log(responseData)
-                    //         }
-                    //     });
+                   
                     res
                         .status(result.status)
                         .json({
@@ -338,102 +313,9 @@ module.exports = router => {
         }
     });
 
-    // router.post('/UpdateProfile', cors(), (req, res) => {
+    
 
-    //     const email = req.body.email;
-    //     console.log(email);
-    //     var emailtosend = email;
-    //     console.log(emailtosend);
-    //     const password = req.body.password;
-    //     console.log(password);
-
-    //     const userObject = req.body.userObject;
-    //     console.log(userObject);
-
-    //     const usertype = req.body.usertype;
-    //     console.log(usertype);
-
-    //     if (!email || !password || !usertype) {
-
-    //         res
-    //             .status(400)
-    //             .json({
-    //                 message: 'Invalid Request !'
-    //             });
-
-    //     } else {
-
-    //         updateprofile
-    //             .updateprofile(email, password, userObject, usertype)
-    //             .then(result => {
-
-    //                 res
-    //                     .status(result.status)
-    //                     .json({
-    //                         message: result.message
-    //                     });
-
-    //             })
-    //             .catch(err => res.status(err.status).json({
-    //                 message: err.message
-    //             }).json({
-    //                 status: err.status
-    //             }));
-    //     }
-    // });
-
-    router.get("/email/verify", cors(), (req, res, next) => {
-        var status;
-        var querymail = req.query.mail;
-        var email = req.query.email;
-        console.log("URL: " + querymail);
-        console.log("email: " + email);
-        User
-            .getUser(email)
-            .then(result => {
-                var minutes1 = new Date(result.usr[0]._doc.created_at).getMinutes();
-                console.log("minutes1" + minutes1);
-                var minutes2 = new Date().getMinutes();
-                console.log("minutes2" + minutes2);
-                var diffinminutes = minutes2 - minutes1;
-                if (diffinminutes > 10) {
-                    deleteuser
-                        .deleteuser(email)
-                        .then(result => {
-                            res.send({
-                                status: 201,
-                                message: 'your email link has been expired please register again'
-                            });
-                        })
-                        .catch(err => res.status(err.status).json({
-                            message: err.message
-                        }));
-
-                } else {
-                    verifyemail
-                        .emailverification(querymail)
-                        .then(result => {
-                            var status = result.usr.status
-                            if (status.length == 2) {
-                                res.send({
-                                    "status": true,
-                                    "message": "registration successful"
-                                });
-                            } else {
-
-                                res.send({
-                                    "status": false,
-                                    "message": "please verify mobile no too"
-                                });
-                            }
-
-                        })
-                        .catch(err => res.status(err.status).json({
-                            message: err.message
-                        }));
-                }
-            });
-    });
+    
 
     router.post("/newotp", cors(), (req, res, next) => {
         var phonetosend = req.body.phone;
@@ -607,39 +489,7 @@ module.exports = router => {
             }));
     });
 
-    router.get('/publicadjusterlist', cors(), (req, res) => {
-        const userid = getUserId(req)
-        console.log(userid);
-
-        if (!userid || !userid.trim()) {
-            // the if statement checks if any of the above paramenters are null or not..if
-            // is the it sends an error report.
-            res
-                .status(400)
-                .json({
-                    message: 'Invalid Request !'
-                });
-
-        } else {
-
-            publicadjusterList
-                .publicadjusterList(userid)
-                .then(function(result) {
-                    console.log(result)
-
-                    res
-                        .status(result.status)
-                        .json({
-                            status: result.status,
-                            message: result.usr
-                        })
-                })
-                .catch(err => res.status(err.status).json({
-                    message: err.message
-                }));
-        }
-
-    });
+   
 
     router.post('/userfullname', cors(), (req, res) => {
         const userid = getUserId(req)
@@ -676,603 +526,7 @@ module.exports = router => {
 
     });
 
-    router.post("/motorfetchPolicyQuotes", (req, res) => {
-        var id = getUserId(req)
-
-        console.log("id" + id);
-        const insuranceObject = (req.body.insuranceObject);
-        console.log("insuranceObject" + JSON.stringify(insuranceObject));
-        const _id=req.body._id
-        
-
-        if (!id || !id.trim()) {
-
-            res
-                .status(400)
-                .json({
-                    "status": false,
-                    "message": 'Invalid Request !'
-                });
-
-        } else {
-
-            var policyList;
-           if(insuranceObject.vehicleType == "Bike"){
-            if(insuranceObject.variant == "F1 149 CC"){
-                policyList = [{
-                    "SrNo": 1,
-                    "Policy Name": "Bharati Insurance",
-                    "Premium Amount": "1322",
-                    "IDV": "20,347",
-                    "Insured Declared Value": "3,21,402",
-                    "NCB": "10%",
-                    "Cashless Garage": "Nil",
-                    "Advance Cash": "Nil",
-                    "Tp Premium": "Nil",
-                    "Zero Depreciation": "2 Claims Per Year",
-                    "Already Included Addons": "Nil",
-                    "Own Damage": "N/A",
-                    "Owner/Driver PA Cover": "Accessible",
-                    "Unnamed Pasanger Cover": "N/A"
-                }, {
-                    "SrNo": 2,
-                    "Policy Name": "Ergo Insurance",
-                    "Premium Amount": "1452",
-                    "IDV": "22,647",
-                    "Insured Declared Value": "3,17,402",
-                    "NCB": "15%",
-                    "Cashless Garage": "3 Garages Near You",
-                    "Advance Cash": "3,45,000",
-                    "Tp Premium": "3,45,000",
-                    "Zero Depreciation": "1 Claims Per Year",
-                    "Already Included Addons": "Nil",
-                    "Own Damage": "Nil",
-                    "Owner/Driver PA Cover": "Accessible",
-                    "Unnamed Pasanger Cover": "N/A"
-
-                }, {
-                    "SrNo": 3,
-                    "Policy Name": "Oriental Insurance",
-                    "Premium Amount": "1682",
-                    "IDV": "21,654",
-                    "Insured Declared Value": "3,10,402",
-                    "NCB": "20%",
-                    "Cashless Garage": "2 Garages Near You",
-                    "Advance Cash": "Nil",
-                    "Tp Premium": "3,50,000",
-                    "Zero Depreciation": "3 Claims Per Year",
-                    "Already Included Addons": "Nil",
-                    "Own Damage": "Nil",
-                    "Owner/Driver PA Cover": "Accessible",
-                    "Unnamed Pasanger Cover": "N/A"
-
-                }, {
-                    "SrNo": 4,
-                    "Policy Name": "Reliance Life Insurance",
-                    "Premium Amount": "1482",
-                    "IDV": "23,654",
-                    "Insured Declared Value": "3,20,402",
-                    "NCB": "18%",
-                    "Cashless Garage": "3 Garages Near You",
-                    "Advance Cash": "Nil",
-                    "Tp Premium": "3,30,500",
-                    "Zero Depreciation": "1 Claims Per Year",
-                    "Already Included Addons": "Nil",
-                    "Own Damage": "Nil",
-                    "Owner/Driver PA Cover": "Accessible",
-                    "Unnamed Pasanger Cover": "N/A"
-
-                }, {
-                    "SrNo": 5,
-                    "Policy Name": "ICICI Lombard Insurance",
-                    "Premium Amount": "1682",
-                    "IDV": "27,654",
-                    "Insured Declared Value": "3,50,602",
-                    "NCB": "22%",
-                    "Cashless Garage": "2 Garages Near You",
-                    "Advance Cash": "Nil",
-                    "Tp Premium": "3,45,500",
-                    "Zero Depreciation": "2 Claims Per Year",
-                    "Already Included Addons": "Nil",
-                    "Own Damage": "Nil",
-                    "Owner/Driver PA Cover": "Accessible",
-                    "Unnamed Pasanger Cover": "N/A"
-                }, {
-                    "SrNo": 6,
-                    "Policy Name": "Reliance Life Insurance",
-                    "Premium Amount": "1542",
-                    "IDV": "25,543",
-                    "Insured Declared Value": "3,42,675",
-                    "NCB": "19%",
-                    "Cashless Garage": "2 Garages Near You",
-                    "Advance Cash": "Nil",
-                    "Tp Premium": "3,43,450",
-                    "Zero Depreciation": "2 Claims Per Year",
-                    "Already Included Addons": "Nil",
-                    "Own Damage": "Nil",
-                    "Owner/Driver PA Cover": "Accessible",
-                    "Unnamed Pasanger Cover": "N/A"
-                }]
-
-            } else if (insuranceObject.variant == "STD 149 CC") {
-                
-                                policyList = [{
-                                    "SrNo": 1,
-                                    "Policy Name": "Bharati Insurance",
-                                    "Premium Amount": "1322",
-                                    "IDV": "20,347",
-                                    "Insured Declared Value": "3,21,402",
-                                    "NCB": "10%",
-                                    "Cashless Garage": "Nil",
-                                    "Advance Cash": "Nil",
-                                    "Tp Premium": "Nil",
-                                    "Zero Depreciation": "2 Claims Per Year",
-                                    "Already Included Addons": "Nil",
-                                    "Own Damage": "N/A",
-                                    "Owner/Driver PA Cover": "Accessible",
-                                    "Unnamed Pasanger Cover": "N/A"
-                                }, {
-                                    "SrNo": 2,
-                                    "Policy Name": "Ergo Insurance",
-                                    "Premium Amount": "1452",
-                                    "IDV": "22,647",
-                                    "Insured Declared Value": "3,17,402",
-                                    "NCB": "15%",
-                                    "Cashless Garage": "3 Garages Near You",
-                                    "Advance Cash": "3,45,000",
-                                    "Tp Premium": "3,45,000",
-                                    "Zero Depreciation": "1 Claims Per Year",
-                                    "Already Included Addons": "Nil",
-                                    "Own Damage": "Nil",
-                                    "Owner/Driver PA Cover": "Accessible",
-                                    "Unnamed Pasanger Cover": "N/A"
-                
-                                }, {
-                                    "SrNo": 3,
-                                    "Policy Name": "Oriental Insurance",
-                                    "Premium Amount": "1682",
-                                    "IDV": "21,654",
-                                    "Insured Declared Value": "3,10,402",
-                                    "NCB": "20%",
-                                    "Cashless Garage": "2 Garages Near You",
-                                    "Advance Cash": "Nil",
-                                    "Tp Premium": "3,50,000",
-                                    "Zero Depreciation": "3 Claims Per Year",
-                                    "Already Included Addons": "Nil",
-                                    "Own Damage": "Nil",
-                                    "Owner/Driver PA Cover": "Accessible",
-                                    "Unnamed Pasanger Cover": "N/A"
-                
-                                }, {
-                                    "SrNo": 4,
-                                    "Policy Name": "Reliance Life Insurance",
-                                    "Premium Amount": "1482",
-                                    "IDV": "23,654",
-                                    "Insured Declared Value": "3,20,402",
-                                    "NCB": "18%",
-                                    "Cashless Garage": "3 Garages Near You",
-                                    "Advance Cash": "Nil",
-                                    "Tp Premium": "3,30,500",
-                                    "Zero Depreciation": "1 Claims Per Year",
-                                    "Already Included Addons": "Nil",
-                                    "Own Damage": "Nil",
-                                    "Owner/Driver PA Cover": "Accessible",
-                                    "Unnamed Pasanger Cover": "N/A"
-                
-                                }, {
-                                    "SrNo": 5,
-                                    "Policy Name": "ICICI Lombard Insurance",
-                                    "Premium Amount": "1682",
-                                    "IDV": "27,654",
-                                    "Insured Declared Value": "3,50,602",
-                                    "NCB": "22%",
-                                    "Cashless Garage": "2 Garages Near You",
-                                    "Advance Cash": "Nil",
-                                    "Tp Premium": "3,45,500",
-                                    "Zero Depreciation": "2 Claims Per Year",
-                                    "Already Included Addons": "Nil",
-                                    "Own Damage": "Nil",
-                                    "Owner/Driver PA Cover": "Accessible",
-                                    "Unnamed Pasanger Cover": "N/A"
-                                }, {
-                                    "SrNo": 6,
-                                    "Policy Name": "Reliance Life Insurance",
-                                    "Premium Amount": "1542",
-                                    "IDV": "25,543",
-                                    "Insured Declared Value": "3,42,675",
-                                    "NCB": "19%",
-                                    "Cashless Garage": "2 Garages Near You",
-                                    "Advance Cash": "Nil",
-                                    "Tp Premium": "3,43,450",
-                                    "Zero Depreciation": "2 Claims Per Year",
-                                    "Already Included Addons": "Nil",
-                                    "Own Damage": "Nil",
-                                    "Owner/Driver PA Cover": "Accessible",
-                                    "Unnamed Pasanger Cover": "N/A"
-                                }]
-                
-                            }
-                            else{
-
-
-                            }
-            }else if (insuranceObject.vehicleType == "Car"){
-            if ( insuranceObject.variant == "AC 4 SPEED(796CC)") {
-
-                policyList = [{
-                    "SrNo": 1,
-                    "Policy Name": "Bharati Insurance",
-                    "Premium Amount": "1322",
-                    "IDV": "20,347",
-                    "Insured Declared Value": "3,21,402",
-                    "NCB": "10%",
-                    "Cashless Garage": "Nil",
-                    "Advance Cash": "Nil",
-                    "Tp Premium": "Nil",
-                    "Zero Depreciation": "2 Claims Per Year",
-                    "Already Included Addons": "Nil",
-                    "Own Damage": "N/A",
-                    "Owner/Driver PA Cover": "Accessible",
-                    "Unnamed Pasanger Cover": "N/A"
-                }, {
-                    "SrNo": 2,
-                    "Policy Name": "Ergo Insurance",
-                    "Premium Amount": "1452",
-                    "IDV": "22,647",
-                    "Insured Declared Value": "3,17,402",
-                    "NCB": "15%",
-                    "Cashless Garage": "3 Garages Near You",
-                    "Advance Cash": "3,45,000",
-                    "Tp Premium": "3,45,000",
-                    "Zero Depreciation": "1 Claims Per Year",
-                    "Already Included Addons": "Nil",
-                    "Own Damage": "Nil",
-                    "Owner/Driver PA Cover": "Accessible",
-                    "Unnamed Pasanger Cover": "N/A"
-
-                }, {
-                    "SrNo": 3,
-                    "Policy Name": "Oriental Insurance",
-                    "Premium Amount": "1682",
-                    "IDV": "21,654",
-                    "Insured Declared Value": "3,10,402",
-                    "NCB": "20%",
-                    "Cashless Garage": "2 Garages Near You",
-                    "Advance Cash": "Nil",
-                    "Tp Premium": "3,50,000",
-                    "Zero Depreciation": "3 Claims Per Year",
-                    "Already Included Addons": "Nil",
-                    "Own Damage": "Nil",
-                    "Owner/Driver PA Cover": "Accessible",
-                    "Unnamed Pasanger Cover": "N/A"
-
-                }, {
-                    "SrNo": 4,
-                    "Policy Name": "Reliance Life Insurance",
-                    "Premium Amount": "1482",
-                    "IDV": "23,654",
-                    "Insured Declared Value": "3,20,402",
-                    "NCB": "18%",
-                    "Cashless Garage": "3 Garages Near You",
-                    "Advance Cash": "Nil",
-                    "Tp Premium": "3,30,500",
-                    "Zero Depreciation": "1 Claims Per Year",
-                    "Already Included Addons": "Nil",
-                    "Own Damage": "Nil",
-                    "Owner/Driver PA Cover": "Accessible",
-                    "Unnamed Pasanger Cover": "N/A"
-
-                }, {
-                    "SrNo": 5,
-                    "Policy Name": "ICICI Lombard Insurance",
-                    "Premium Amount": "1682",
-                    "IDV": "27,654",
-                    "Insured Declared Value": "3,50,602",
-                    "NCB": "22%",
-                    "Cashless Garage": "2 Garages Near You",
-                    "Advance Cash": "Nil",
-                    "Tp Premium": "3,45,500",
-                    "Zero Depreciation": "2 Claims Per Year",
-                    "Already Included Addons": "Nil",
-                    "Own Damage": "Nil",
-                    "Owner/Driver PA Cover": "Accessible",
-                    "Unnamed Pasanger Cover": "N/A"
-                }, {
-                    "SrNo": 6,
-                    "Policy Name": "Reliance Life Insurance",
-                    "Premium Amount": "1542",
-                    "IDV": "25,543",
-                    "Insured Declared Value": "3,42,675",
-                    "NCB": "19%",
-                    "Cashless Garage": "2 Garages Near You",
-                    "Advance Cash": "Nil",
-                    "Tp Premium": "3,43,450",
-                    "Zero Depreciation": "2 Claims Per Year",
-                    "Already Included Addons": "Nil",
-                    "Own Damage": "Nil",
-                    "Owner/Driver PA Cover": "Accessible",
-                    "Unnamed Pasanger Cover": "N/A"
-                }]
-
-            } else if (insuranceObject.variant == "LPG AC") {
-
-                policyList = [{
-                    "SrNo": 1,
-                    "Policy Name": "Bharati Insurance",
-                    "Premium Amount": "1322",
-                    "IDV": "20,347",
-                    "Insured Declared Value": "3,21,402",
-                    "NCB": "10%",
-                    "Cashless Garage": "Nil",
-                    "Advance Cash": "Nil",
-                    "Tp Premium": "Nil",
-                    "Zero Depreciation": "2 Claims Per Year",
-                    "Already Included Addons": "Nil",
-                    "Own Damage": "N/A",
-                    "Owner/Driver PA Cover": "Accessible",
-                    "Unnamed Pasanger Cover": "N/A"
-                }, {
-                    "SrNo": 2,
-                    "Policy Name": "Ergo Insurance",
-                    "Premium Amount": "1452",
-                    "IDV": "22,647",
-                    "Insured Declared Value": "3,17,402",
-                    "NCB": "15%",
-                    "Cashless Garage": "3 Garages Near You",
-                    "Advance Cash": "3,45,000",
-                    "Tp Premium": "3,45,000",
-                    "Zero Depreciation": "1 Claims Per Year",
-                    "Already Included Addons": "Nil",
-                    "Own Damage": "Nil",
-                    "Owner/Driver PA Cover": "Accessible",
-                    "Unnamed Pasanger Cover": "N/A"
-
-                }, {
-                    "SrNo": 3,
-                    "Policy Name": "Oriental Insurance",
-                    "Premium Amount": "1682",
-                    "IDV": "21,654",
-                    "Insured Declared Value": "3,10,402",
-                    "NCB": "20%",
-                    "Cashless Garage": "2 Garages Near You",
-                    "Advance Cash": "Nil",
-                    "Tp Premium": "3,50,000",
-                    "Zero Depreciation": "3 Claims Per Year",
-                    "Already Included Addons": "Nil",
-                    "Own Damage": "Nil",
-                    "Owner/Driver PA Cover": "Accessible",
-                    "Unnamed Pasanger Cover": "N/A"
-
-                }, {
-                    "SrNo": 4,
-                    "Policy Name": "Reliance Life Insurance",
-                    "Premium Amount": "1482",
-                    "IDV": "23,654",
-                    "Insured Declared Value": "3,20,402",
-                    "NCB": "18%",
-                    "Cashless Garage": "3 Garages Near You",
-                    "Advance Cash": "Nil",
-                    "Tp Premium": "3,30,500",
-                    "Zero Depreciation": "1 Claims Per Year",
-                    "Already Included Addons": "Nil",
-                    "Own Damage": "Nil",
-                    "Owner/Driver PA Cover": "Accessible",
-                    "Unnamed Pasanger Cover": "N/A"
-
-                }, {
-                    "SrNo": 5,
-                    "Policy Name": "ICICI Lombard Insurance",
-                    "Premium Amount": "1682",
-                    "IDV": "27,654",
-                    "Insured Declared Value": "3,50,602",
-                    "NCB": "22%",
-                    "Cashless Garage": "2 Garages Near You",
-                    "Advance Cash": "Nil",
-                    "Tp Premium": "3,45,500",
-                    "Zero Depreciation": "2 Claims Per Year",
-                    "Already Included Addons": "Nil",
-                    "Own Damage": "Nil",
-                    "Owner/Driver PA Cover": "Accessible",
-                    "Unnamed Pasanger Cover": "N/A"
-                }, {
-                    "SrNo": 6,
-                    "Policy Name": "Reliance Life Insurance",
-                    "Premium Amount": "1542",
-                    "IDV": "25,543",
-                    "Insured Declared Value": "3,42,675",
-                    "NCB": "19%",
-                    "Cashless Garage": "2 Garages Near You",
-                    "Advance Cash": "Nil",
-                    "Tp Premium": "3,43,450",
-                    "Zero Depreciation": "2 Claims Per Year",
-                    "Already Included Addons": "Nil",
-                    "Own Damage": "Nil",
-                    "Owner/Driver PA Cover": "Accessible",
-                    "Unnamed Pasanger Cover": "N/A"
-                }]
-
-            }
-        }
-            motorsavepolicy
-                .motorsavepolicy(id,_id,insuranceObject)
-                .then((result) => {
-                    console.log("_id" + result._id)
-                    res
-                        .status(200)
-                        .json({
-                            "status": true,
-                            "message": result.message,
-                            "policyList": policyList,
-                            "_id": result._id
-                        });
-
-                })
-                .catch(err => res.status(err.status).json({
-                    message: err.message
-                }));
-
-        }
-    });
-
-    router.get('/motorfetchSavePolicy', cors(), (req, res) => {
-        const userid = getUserId(req)
-        console.log(userid);
-
-        if (!userid || !userid.trim()) {
-            // the if statement checks if any of the above paramenters are null or not..if
-            // is the it sends an error report.
-            res
-                .status(400)
-                .json({
-                    message: 'Invalid Request !'
-                });
-
-        } else {
-
-            motorfetchSavePolicy
-                .motorfetchSavePolicy(userid)
-                .then(function(result) {
-                    console.log(result)
-                    res
-                        .status(result.status)
-                        .json({
-                            status: result.status,
-                            policylist: result.policylist
-                        })
-                })
-                .catch(err => res.status(err.status).json({
-                    message: err.message
-                }));
-        }
-
-    });
-
-    router.post('/motorIssuePolicy', cors(), function(req, res) {
-        var id = getUserId(req)
-        var policydetailmessage;
-        var transactiondeletemessage;
-
-        const _id = (req.body.transactionString._id).toString()
-        console.log("_id" + _id);
-        const phonetosend = req.body.transactionString.policydetails.phone;
-        console.log(phonetosend);
-        const emailtosend = req.body.transactionString.policydetails.email;
-        console.log(emailtosend);
-        var messagetosend = 'Thank you for choosing HDFC Ergo to insure your Motor. Please wait for 4-5 working days to receive your copy of the Insurance Policy Document';
-        var transaction = req.body.transactionString;
-        console.log(transaction)
-        var policy = transaction.policydetails;
-        var vehicle = transaction.vehicledetails;
-
-        var policyNumber = "";
-        var possible = "01234567891011121314151617181920213031404151523548854547585474654987878";
-        for (var i = 0; i < 10; i++)
-            policyNumber += possible.charAt(Math.floor(Math.random() * possible.length));
-
-        var object = {
-            "from": policy.name,
-            "to": policy.companyName,
-            "policyName": policy.policyName,
-            "premiumPayment": policy.premiumPayment
-        }
-        // object = function(policy, vehicle) {
-        //     var record = {};
-
-        //     function set(k) {
-        //         record[k] = this[k];
-        //     }
-        //     Object
-        //         .keys(policy)
-        //         .forEach(set, policy);
-        //     Object
-        //         .keys(vehicle)
-        //         .forEach(set, vehicle);
-
-        //     return record;
-        // }(policy, vehicle)
-
-        var transactionString = JSON.stringify(object)
-        console.log(transactionString)
-
-
-
-        var firstMethod = function() {
-            var promise = new Promise(function(resolve, reject) {
-                policydetails
-                    .policydetails(policyNumber, id, policy, vehicle)
-                    .then(result => {
-                        policydetailmessage = result.message
-                        console.log("policydetailmessage" + policydetailmessage);
-                        resolve(policydetailmessage);
-
-                    })
-                    .catch(err => res.status(err.status).json({
-                        message: err.message
-                    }));
-            });
-            return promise;
-        };
-
-        var secondMethod = function() {
-            var promise = new Promise(function(resolve, reject) {
-
-                motordeletesavepolicy
-                    .motordeletesavepolicy(_id)
-                    .then(function(result) {
-                        transactiondeletemessage = result.message
-                        console.log("transactiondeletemessage" + transactiondeletemessage);
-                        resolve(transactiondeletemessage);
-
-                    })
-                    .catch(err => res.status(err.status).json({
-                        message: err.message
-                    }));
-
-            });
-            return promise;
-        };
-
-        var thirdMethod = function() {
-
-            savetransaction
-                .savetransaction(policyNumber, transactionString)
-                .then((result) => {
-                    if (result !== null && result !== '') {
-                        var mailOptions = {
-                            transport: transporter,
-                            from: '"Marin Service"<vikram.viswanathan@rapidqube.com>',
-                            to: emailtosend,
-                            subject: 'Policy Issue Notification',
-
-                            html: "Hello,<br> Thank you for choosing HDFC Ergo to insure your Motor. Please wait fo" +
-                                "r 4-5 working days to receive your copy of the Insurance Policy Document<br>"
-                        };
-                        transporter.sendMail(mailOptions, (error, info) => {
-                            if (error) {}
-                        });
-                        // nexmo     .message     .sendSms('919768135452', phonetosend, messagetosend, {
-                        //         type: 'unicode'     }, (err, responseData) => {         if
-                        // (responseData) {             console.log(responseData)         }     });
-
-                        res
-                            .status(200)
-                            .json({
-                                "message": "Policy issued succesfully !",
-                                "status": "success"
-                            });
-                    }
-
-                })
-                .catch(err => res.status(err.status).json({
-                    message: err.message
-                }));
-
-        };
-        firstMethod()
-            .then(secondMethod)
-            .then(thirdMethod);
-
-    });
+   
 
     router.post('/brandnewupdatevehical', (req, res) => {
         if (!checkToken(req)) {
@@ -1319,35 +573,66 @@ module.exports = router => {
     
     
     router.post('/bharathiproposal', (req, res) => {
-        // if (!checkToken(req)) {
-        //     console.log("invalid token")
-        //     return res.status(401).json({
-        //         message: "invalid token"
-        //     })
-        // }
+        if (!checkToken(req)) {
+            console.log("invalid token")
+            return res.status(401).json({
+                message: "invalid token"
+            })
+        }
         logger.fatal('Hitting gproposal for two wheeler');
         var obj=req.body;
         console.log(obj)
         var proposalenddate=  obj.Body.serve.SessionDoc.Session.Quote.PolicyEndDate
 
        var proposalstartdate=  obj.Body.serve.SessionDoc.Session.Quote.PolicyStartDate
-  console.log(proposalstartdate,"kaviiiiiiiii")
-const proposalrequest='<Envelope xmlns="http://schemas.xmlsoap.org/soap/envelope/"><Body><serve xmlns="http://schemas.cordys.com/gateway/Provider"> <SessionDoc><Session><SessionData xmlns="http://schemas.cordys.com/bagi/b2c/emotor/bpm/1.0"><Index>2</Index><InitTime>Thu, 13 Apr 2017 16:55:41 GMT</InitTime><UserName>signMtr</UserName><Password>AZg3Q1SktWKLz0Os/H0MlAxFfI75pjnpKjn9xrV9vimyyS7/5Ilil/ftcP5oHxC7IFYLVF0C3MAJcIznwrZvDA==</Password>	<OrderNo>VDJC492112</OrderNo><QuoteNo>QRN201807160000632</QuoteNo><Route>INT</Route><Contract>MTR</Contract><Channel>polbaz</Channel><TransactionType>Quote</TransactionType><TransactionStatus>Fresh</TransactionStatus><ID>149208275803217169563038</ID><UserAgentID>2C000098</UserAgentID><Source>2C000098</Source></SessionData><tns:Vehicle xmlns:tns="http://schemas.cordys.com/bagi/b2c/emotor/2.0">	<tns:TypeOfBusiness>TR</tns:TypeOfBusiness>	<tns:AccessoryInsured>N</tns:AccessoryInsured><tns:AccessoryValue>0</tns:AccessoryValue><tns:BiFuelKit>	<tns:IsBiFuelKit>N</tns:IsBiFuelKit><tns:BiFuelKitValue>0</tns:BiFuelKitValue><tns:ExternallyFitted>N</tns:ExternallyFitted></tns:BiFuelKit><tns:DateOfRegistration>2014-04-01T00:00:00.000</tns:DateOfRegistration><tns:DateOfManufacture>2014-04-01T00:00:00.000</tns:DateOfManufacture><tns:RiskType>FTW</tns:RiskType><tns:Make>HERO MOTOR CORP</tns:Make><tns:Model>PASSION</tns:Model><tns:FuelType>P</tns:FuelType><tns:Variant>X PRO DRUM DISC SELF</tns:Variant><tns:IDV>41208.00</tns:IDV><tns:EngineNo>JA12ABDGM26881</tns:EngineNo>	<tns:ChasisNo>MBLJA12ACDGM21415</tns:ChasisNo><tns:VehicleAge>4</tns:VehicleAge><tns:CC>110</tns:CC><tns:SeatingCapacity>2</tns:SeatingCapacity><tns:PlaceOfRegistration>Bettiah</tns:PlaceOfRegistration><tns:VehicleExtraTag01 />	<tns:RegistrationNo>BR22S3564 </tns:RegistrationNo>	<tns:ExShowroomPrice>52297</tns:ExShowroomPrice><tns:PaidDriver>False</tns:PaidDriver></tns:Vehicle><tns:Quote xmlns:tns="http://schemas.cordys.com/bagi/b2c/emotor/2.0"><tns:LLDriver>false</tns:LLDriver><tns:ExistingPolicy>	<tns:Claims>0</tns:Claims><tns:NCB>35</tns:NCB>	<tns:PolicyType>Comprehensive</tns:PolicyType><tns:EndDate>2017-04-19T23:59:59.000</tns:EndDate><tns:PolicyNo>OG-17-9906-1802-00004439</tns:PolicyNo><tns:InsuranceCompany>Bajaj Allianz General Insurance Co. Ltd.</tns:InsuranceCompany></tns:ExistingPolicy>	<tns:PolicyStartDate>'+proposalstartdate+'</tns:PolicyStartDate><tns:Deductible>0</tns:Deductible><tns:PAFamilySI>0</tns:PAFamilySI><tns:AgentNumber /><tns:DealerId /><tns:Premium><tns:Discount /></tns:Premium><tns:SelectedCovers><tns:CarDamageSelected>true</tns:CarDamageSelected>	<tns:TPLiabilitySelected>true</tns:TPLiabilitySelected>	<tns:PADriverSelected>true</tns:PADriverSelected><tns:PAFamilyPremiumSelected>true</tns:PAFamilyPremiumSelected></tns:SelectedCovers><tns:PolicyEndDate>'+proposalenddate+'</tns:PolicyEndDate></tns:Quote><tns:Client xmlns:tns="http://schemas.cordys.com/bagi/b2c/emotor/2.0"><tns:ClientType>Individual</tns:ClientType><tns:FinancierDetails><tns:IsFinanced>0</tns:IsFinanced></tns:FinancierDetails>	<tns:CltDOB>19790930</tns:CltDOB><tns:CltSex>M</tns:CltSex>	<tns:Salut>MR</tns:Salut><tns:GivName>AJAY</tns:GivName><tns:ClientExtraTag01>BIHAR</tns:ClientExtraTag01><tns:CityOfResidence>Bettiah</tns:CityOfResidence><tns:EmailID>ajaysktpp@gmail.com</tns:EmailID><tns:MobileNo>8084088091</tns:MobileNo><tns:SurName>Kumar Tiwari</tns:SurName><tns:Marryd>S</tns:Marryd><tns:Occupation>0007</tns:Occupation>	<tns:CltAddr01>vishunpurwa po d k shikarpur</tns:CltAddr01>	<tns:CltAddr02>ps -Shikarpur</tns:CltAddr02><tns:City>Bettiah</tns:City><tns:State>Bihar</tns:State><tns:PinCode>845451</tns:PinCode><tns:Nominee><tns:Name>punam pandey</tns:Name>	<tns:Age>39</tns:Age><tns:Relationship>Spouse</tns:Relationship></tns:Nominee><tns:RegistrationZone>B</tns:RegistrationZone></tns:Client><Payment><PaymentMode /><PaymentType /><TxnReferenceNo /><TxnAmount />	<TxnDate />	<BankCode /><InstrumentAmount /></Payment></Session></SessionDoc> </serve> </Body></Envelope>'
+       var QuoteNo=obj.Body.serve.SessionDoc.Session.SessionData.QuoteNo
+       var OrderNo=obj.Body.serve.SessionDoc.Session.SessionData.OrderNo
+       var emailId=obj.Body.serve.SessionDoc.Session.Client.EmailID
+       var mobileNo=obj.Body.serve.SessionDoc.Session.Client.MobileNo 
+       var inittime=obj.Body.serve.SessionDoc.Session.SessionData.InitTime
+       var financed=obj.Body.serve.SessionDoc.Session.Client.FinancierDetails.IsFinanced
+       var stateofregistration=obj.Body.serve.SessionDoc.Session.Client.ClientExtraTag01
+       var Occupation=obj.Body.serve.SessionDoc.Session.Client.Occupation
+       var EngineNo=obj.Body.serve.SessionDoc.Session.Vehicle.EngineNo
+       var ChasisNo=obj.Body.serve.SessionDoc.Session.Vehicle.ChasisNo
+       var Make=obj.Body.serve.SessionDoc.Session.Vehicle.Make
+       var Model=obj.Body.serve.SessionDoc.Session.Vehicle.Model
+       var FuelType=obj.Body.serve.SessionDoc.Session.Vehicle.FuelType
+       var AccessoryInsured=obj.Body.serve.SessionDoc.Session.Vehicle.AccessoryInsured
+       var ExShowroomPrice=obj.Body.serve.SessionDoc.Session.Vehicle.ExShowroomPrice
+       var DateOfManufacture=obj.Body.serve.SessionDoc.Session.Vehicle.DateOfManufacture
+       var DateOfRegistration=obj.Body.serve.SessionDoc.Session.Vehicle.DateOfRegistration
+       var CityOfRegistration=obj.Body.serve.SessionDoc.Session.Client.CityOfResidence
+       var givname=obj.Body.serve.SessionDoc.Session.Client.GivName
+       var CarDamageSelected=obj.Body.serve.SessionDoc.Session.Quote.SelectedCovers.CarDamageSelected
+       var TPLiabilitySelected=obj.Body.serve.SessionDoc.Session.Quote.SelectedCovers.TPLiabilitySelected
+       var PADriverSelected=obj.Body.serve.SessionDoc.Session.Quote.SelectedCovers.PADriverSelected
+       var PAFamilyPremiumSelected=obj.Body.serve.SessionDoc.Session.Quote.SelectedCovers.PAFamilyPremiumSelected
+
+
+       console.log(OrderNo,"orderno")
+       console.log(QuoteNo,"quoteno00000")
+
+
+
+
+      console.log(proposalstartdate,"kaviiiiiiiii")
+ const proposalrequest='<Envelope xmlns="http://schemas.xmlsoap.org/soap/envelope/"><Body><serve xmlns="http://schemas.cordys.com/gateway/Provider"> <SessionDoc><Session><SessionData xmlns="http://schemas.cordys.com/bagi/b2c/emotor/bpm/1.0"><Index>2</Index><InitTime>'+inittime+'</InitTime><UserName>signMtr</UserName><Password>AZg3Q1SktWKLz0Os/H0MlAxFfI75pjnpKjn9xrV9vimyyS7/5Ilil/ftcP5oHxC7IFYLVF0C3MAJcIznwrZvDA==</Password>	<OrderNo>'+OrderNo+'</OrderNo><QuoteNo>'+QuoteNo+'</QuoteNo><Route>INT</Route><Contract>MTR</Contract><Channel>signMtr</Channel><TransactionType>Quote</TransactionType><TransactionStatus>Fresh</TransactionStatus><ID>149208275803217169563038</ID><UserAgentID>2C000098</UserAgentID><Source>2C000098</Source></SessionData><tns:Vehicle xmlns:tns="http://schemas.cordys.com/bagi/b2c/emotor/2.0">	<tns:TypeOfBusiness>TR</tns:TypeOfBusiness>	<tns:AccessoryInsured>'+AccessoryInsured+'</tns:AccessoryInsured><tns:AccessoryValue>0</tns:AccessoryValue><tns:BiFuelKit>	<tns:IsBiFuelKit>N</tns:IsBiFuelKit><tns:BiFuelKitValue>0</tns:BiFuelKitValue><tns:ExternallyFitted>N</tns:ExternallyFitted></tns:BiFuelKit><tns:DateOfRegistration>'+DateOfRegistration+'</tns:DateOfRegistration><tns:DateOfManufacture>'+DateOfManufacture+'</tns:DateOfManufacture><tns:RiskType>FTW</tns:RiskType><tns:Make>'+Make+'</tns:Make><tns:Model>'+ Model+'</tns:Model><tns:FuelType>'+FuelType+'</tns:FuelType><tns:Variant>X PRO DRUM DISC SELF</tns:Variant><tns:IDV>41208.00</tns:IDV><tns:EngineNo>'+EngineNo+'</tns:EngineNo>	<tns:ChasisNo>'+ChasisNo+'</tns:ChasisNo><tns:VehicleAge>4</tns:VehicleAge><tns:CC>110</tns:CC><tns:SeatingCapacity>2</tns:SeatingCapacity><tns:PlaceOfRegistration>Bettiah</tns:PlaceOfRegistration><tns:VehicleExtraTag01 />	<tns:RegistrationNo>BR22S3564 </tns:RegistrationNo>	<tns:ExShowroomPrice>'+ExShowroomPrice+'</tns:ExShowroomPrice><tns:PaidDriver>False</tns:PaidDriver></tns:Vehicle><tns:Quote xmlns:tns="http://schemas.cordys.com/bagi/b2c/emotor/2.0"><tns:LLDriver>false</tns:LLDriver><tns:ExistingPolicy>	<tns:Claims>0</tns:Claims><tns:NCB>35</tns:NCB>	<tns:PolicyType>Comprehensive</tns:PolicyType><tns:EndDate>2019-08-06T23:59:59.000</tns:EndDate><tns:PolicyNo>OG-17-9906-1802-00004439</tns:PolicyNo><tns:InsuranceCompany>Bajaj Allianz General Insurance Co. Ltd.</tns:InsuranceCompany></tns:ExistingPolicy>	<tns:PolicyStartDate>'+proposalstartdate+'</tns:PolicyStartDate><tns:Deductible>0</tns:Deductible><tns:PAFamilySI>0</tns:PAFamilySI><tns:AgentNumber /><tns:DealerId /><tns:Premium><tns:Discount /></tns:Premium><tns:SelectedCovers><tns:CarDamageSelected>'+CarDamageSelected+'</tns:CarDamageSelected>	<tns:TPLiabilitySelected>'+TPLiabilitySelected+'</tns:TPLiabilitySelected>	<tns:PADriverSelected>'+PADriverSelected+'</tns:PADriverSelected><tns:PAFamilyPremiumSelected>'+PAFamilyPremiumSelected+'</tns:PAFamilyPremiumSelected></tns:SelectedCovers><tns:PolicyEndDate>'+proposalenddate+'</tns:PolicyEndDate></tns:Quote><tns:Client xmlns:tns="http://schemas.cordys.com/bagi/b2c/emotor/2.0"><tns:ClientType>Individual</tns:ClientType><tns:FinancierDetails><tns:IsFinanced>'+financed+'</tns:IsFinanced></tns:FinancierDetails>	<tns:CltDOB>19790930</tns:CltDOB><tns:CltSex>M</tns:CltSex>	<tns:Salut>MR</tns:Salut><tns:GivName>'+givname+'</tns:GivName><tns:ClientExtraTag01>'+stateofregistration+'</tns:ClientExtraTag01><tns:CityOfResidence>'+CityOfRegistration+'</tns:CityOfResidence><tns:EmailID>'+emailId+'</tns:EmailID><tns:MobileNo>'+mobileNo+'</tns:MobileNo><tns:SurName>Kumar Tiwari</tns:SurName><tns:Marryd>S</tns:Marryd><tns:Occupation>'+Occupation+'</tns:Occupation>	<tns:CltAddr01>vishunpurwa po d k shikarpur</tns:CltAddr01>	<tns:CltAddr02>ps -Shikarpur</tns:CltAddr02><tns:City>Bettiah</tns:City><tns:State>Bihar</tns:State><tns:PinCode>845451</tns:PinCode><tns:Nominee><tns:Name>punam pandey</tns:Name>	<tns:Age>39</tns:Age><tns:Relationship>Spouse</tns:Relationship></tns:Nominee><tns:RegistrationZone>B</tns:RegistrationZone></tns:Client><Payment><PaymentMode /><PaymentType /><TxnReferenceNo /><TxnAmount />	<TxnDate />	<BankCode /><InstrumentAmount /></Payment></Session></SessionDoc> </serve> </Body></Envelope>'
 
       
-       console.log(proposalrequest,"proposalrequest")
+      console.log(proposalrequest,"proposalrequest")
       
         
         
     
-         if (!proposalrequest) {
+      if (!proposalrequest) {
         logger.error('Body is Invalid...');
         console.log(" invalid body ")
         return res.status(400).json({
             message: 'Invalid Request !'
-        });
+                                    });
     
-    }else{
+                            }else{
 
             bharathiproposal.bharathiproposal(proposalrequest)
     
@@ -1368,32 +653,50 @@ const proposalrequest='<Envelope xmlns="http://schemas.xmlsoap.org/soap/envelope
 
 
     router.post('/bharathiquickquote', (req, res) => {
-        console.log("hiiiiiiiiiiii")
+       console.log("hiiiiiiiiiiii")
+       if (!checkToken(req)) {
+        console.log("invalid token")
+        return res.status(401).json({
+            message: "invalid token"
+        })
+    }
       
-      // var  xmldata1=JSON.stringify(req.body);
-       var  xmldata2=req.body;
-       //console.log(xmldata1)
-       var startdatetemp=xmldata2.Body.serve.SessionDoc.Session.Quote.PolicyStartDate
-       var enddatetemp=xmldata2.Body.serve.SessionDoc.Session.Quote.PolicyEndDate
-console.log(startdatetemp,"raj")
-console.log(enddatetemp,"kavitha")
+       let  xmldata2=req.body;
+       let startdatetemp=xmldata2.Body.serve.SessionDoc.Session.Quote.PolicyStartDate
+       let enddatetemp=xmldata2.Body.serve.SessionDoc.Session.Quote.PolicyEndDate
+      
+  
+       let emailId=xmldata2.Body.serve.SessionDoc.Session.Client.EmailID
+       let mobileNo=xmldata2.Body.serve.SessionDoc.Session.Client.MobileNo 
 
-       // var xmldata = '<Envelope xmlns="http://schemas.xmlsoap.org/soap/envelope/">      <Body>        <serve xmlns="http://schemas.cordys.com/gateway/Provider">            <SessionDoc><Session>	<SessionData xmlns="http://schemas.cordys.com/bagi/b2c/emotor/bpm/1.0">		<Index>1</Index>		<InitTime>Thu, 13 Apr 2017 16:55:39 GMT</InitTime>		<UserName>signMtr</UserName>		<Password>AZg3Q1SktWKLz0Os/H0MlAxFfI75pjnpKjn9xrV9vimyyS7/5Ilil/ftcP5oHxC7IFYLVF0C3MAJcIznwrZvDA==</Password>		<OrderNo>NA</OrderNo>		<QuoteNo>NA</QuoteNo>		<Route>INT</Route>		<Contract>MTR</Contract>		<Channel>polbaz</Channel>		<TransactionType>Quote</TransactionType>		<TransactionStatus>Fresh</TransactionStatus>		<ID>149208275275017943554968</ID>		<UserAgentID>2C000098</UserAgentID>		<Source>2C000098</Source>	</SessionData>	<tns:Vehicle xmlns:tns="http://schemas.cordys.com/bagi/b2c/emotor/2.0">		<tns:TypeOfBusiness>TR</tns:TypeOfBusiness>		<tns:AccessoryInsured>N</tns:AccessoryInsured>		<tns:NonElecAccessoryInsured>N</tns:NonElecAccessoryInsured>		<tns:AccessoryValue>0</tns:AccessoryValue>		<tns:BiFuelKit>			<tns:IsBiFuelKit>N</tns:IsBiFuelKit>			<tns:BiFuelKitValue>0</tns:BiFuelKitValue>			<tns:ExternallyFitted>N</tns:ExternallyFitted>		</tns:BiFuelKit>		<tns:DateOfRegistration>2014-04-01T00:00:00.000</tns:DateOfRegistration>		<tns:DateOfManufacture>2014-04-01T00:00:00.000</tns:DateOfManufacture>		<tns:RiskType>FTW</tns:RiskType>		<tns:Make>HERO MOTOR CORP</tns:Make>		<tns:Model>PASSION</tns:Model>		<tns:FuelType>P</tns:FuelType>		<tns:Variant>X PRO DRUM DISC SELF</tns:Variant>		<tns:IDV>41208</tns:IDV>		<tns:VehicleAge>4</tns:VehicleAge>		<tns:CC>110</tns:CC>		<tns:PlaceOfRegistration>Bettiah</tns:PlaceOfRegistration>		<tns:SeatingCapacity>2</tns:SeatingCapacity>		<tns:VehicleExtraTag01 />		<tns:RegistrationNo>BR22S3564 </tns:RegistrationNo>		<tns:ExShowroomPrice>52297</tns:ExShowroomPrice>		<tns:PaidDriver>False</tns:PaidDriver>	</tns:Vehicle>	<tns:Quote xmlns:tns="http://schemas.cordys.com/bagi/b2c/emotor/2.0">		<tns:LLDriver>false</tns:LLDriver>		<tns:ExistingPolicy>			<tns:Claims>0</tns:Claims>			<tns:NCB>35</tns:NCB>			<tns:PolicyType>Comprehensive</tns:PolicyType>			<tns:EndDate>2019-07-14T23:59:59.000</tns:EndDate>		</tns:ExistingPolicy>		<tns:PolicyStartDate>2018-07-15T00:00:00.000</tns:PolicyStartDate>		<tns:Deductible>0</tns:Deductible>		<tns:PAFamilySI>0</tns:PAFamilySI>		<tns:AgentNumber />		<tns:DealerId />		<tns:Premium>			<tns:Discount />		</tns:Premium>		<tns:SelectedCovers>			<tns:CarDamageSelected>True</tns:CarDamageSelected>			<tns:PAFamilyPremiumSelected>true</tns:PAFamilyPremiumSelected>			<tns:TPLiabilitySelected>True</tns:TPLiabilitySelected>			<tns:PADriverSelected>True</tns:PADriverSelected>			<tns:PAFamilyPremiumSelected>true</tns:PAFamilyPremiumSelected>		</tns:SelectedCovers>		<tns:PolicyEndDate>2018-04-19T23:59:59.000</tns:PolicyEndDate>	</tns:Quote>	<tns:Client xmlns:tns="http://schemas.cordys.com/bagi/b2c/emotor/2.0">		<tns:ClientType>Individual</tns:ClientType>		<tns:CltDOB />		<tns:FinancierDetails>			<tns:IsFinanced>0</tns:IsFinanced>		</tns:FinancierDetails>		<tns:GivName>TW238275707201704130455394890 </tns:GivName>		<tns:SurName />		<tns:ClientExtraTag01>BIHAR</tns:ClientExtraTag01>		<tns:CityOfResidence>Bettiah</tns:CityOfResidence>		<tns:EmailID>pb@pb.com</tns:EmailID>		<tns:MobileNo>9777777777</tns:MobileNo>		<tns:RegistrationZone>B</tns:RegistrationZone>	</tns:Client></Session> </SessionDoc>        </serve>    </Body></Envelope>'
+       let financed=xmldata2.Body.serve.SessionDoc.Session.Client.FinancierDetails.IsFinanced
+       let givname=xmldata2.Body.serve.SessionDoc.Session.Client.GivName
+       let stateofregistration=xmldata2.Body.serve.SessionDoc.Session.Client.ClientExtraTag01
+       let cityofregistration=xmldata2.Body.serve.SessionDoc.Session.Client.CityOfResidence
+       let zone=xmldata2.Body.serve.SessionDoc.Session.Client.RegistrationZone
+ 
+       let Make=xmldata2.Body.serve.SessionDoc.Session.Vehicle.Make
+       let Model=xmldata2.Body.serve.SessionDoc.Session.Vehicle.Model
+       let UserName=xmldata2.Body.serve.SessionDoc.Session.SessionData.UserName
 
-        var xmldata = '<Envelope xmlns="http://schemas.xmlsoap.org/soap/envelope/">      <Body>        <serve xmlns="http://schemas.cordys.com/gateway/Provider">            <SessionDoc><Session>	<SessionData xmlns="http://schemas.cordys.com/bagi/b2c/emotor/bpm/1.0">		<Index>1</Index>		<InitTime>Thu, 13 Apr 2017 16:55:39 GMT</InitTime>		<UserName>signMtr</UserName>		<Password>AZg3Q1SktWKLz0Os/H0MlAxFfI75pjnpKjn9xrV9vimyyS7/5Ilil/ftcP5oHxC7IFYLVF0C3MAJcIznwrZvDA==</Password>		<OrderNo>NA</OrderNo>		<QuoteNo>NA</QuoteNo>		<Route>INT</Route>		<Contract>MTR</Contract>		<Channel>polbaz</Channel>		<TransactionType>Quote</TransactionType>		<TransactionStatus>Fresh</TransactionStatus>		<ID>149208275275017943554968</ID>		<UserAgentID>2C000098</UserAgentID>		<Source>2C000098</Source>	</SessionData>	<tns:Vehicle xmlns:tns="http://schemas.cordys.com/bagi/b2c/emotor/2.0">		<tns:TypeOfBusiness>TR</tns:TypeOfBusiness>		<tns:AccessoryInsured>N</tns:AccessoryInsured>		<tns:NonElecAccessoryInsured>N</tns:NonElecAccessoryInsured>		<tns:AccessoryValue>0</tns:AccessoryValue>		<tns:BiFuelKit>			<tns:IsBiFuelKit>N</tns:IsBiFuelKit>			<tns:BiFuelKitValue>0</tns:BiFuelKitValue>			<tns:ExternallyFitted>N</tns:ExternallyFitted>		</tns:BiFuelKit>		<tns:DateOfRegistration>2014-04-01T00:00:00.000</tns:DateOfRegistration>		<tns:DateOfManufacture>2014-04-01T00:00:00.000</tns:DateOfManufacture>		<tns:RiskType>FTW</tns:RiskType>		<tns:Make>HERO MOTOR CORP</tns:Make>		<tns:Model>PASSION</tns:Model>		<tns:FuelType>P</tns:FuelType>		<tns:Variant>X PRO DRUM DISC SELF</tns:Variant>		<tns:IDV>41208</tns:IDV>		<tns:VehicleAge>4</tns:VehicleAge>		<tns:CC>110</tns:CC>		<tns:PlaceOfRegistration>Bettiah</tns:PlaceOfRegistration>		<tns:SeatingCapacity>2</tns:SeatingCapacity>		<tns:VehicleExtraTag01 />		<tns:RegistrationNo>BR22S3564 </tns:RegistrationNo>		<tns:ExShowroomPrice>52297</tns:ExShowroomPrice>		<tns:PaidDriver>False</tns:PaidDriver>	</tns:Vehicle>	<tns:Quote xmlns:tns="http://schemas.cordys.com/bagi/b2c/emotor/2.0">		<tns:LLDriver>false</tns:LLDriver>		<tns:ExistingPolicy>			<tns:Claims>0</tns:Claims>			<tns:NCB>35</tns:NCB>			<tns:PolicyType>Comprehensive</tns:PolicyType>			<tns:EndDate>2019-07-14T23:59:59.000</tns:EndDate>		</tns:ExistingPolicy>		<tns:PolicyStartDate>'+startdatetemp+'</tns:PolicyStartDate>		<tns:Deductible>0</tns:Deductible>		<tns:PAFamilySI>0</tns:PAFamilySI>		<tns:AgentNumber />		<tns:DealerId />		<tns:Premium>			<tns:Discount />		</tns:Premium>		<tns:SelectedCovers>			<tns:CarDamageSelected>True</tns:CarDamageSelected>			<tns:PAFamilyPremiumSelected>true</tns:PAFamilyPremiumSelected>			<tns:TPLiabilitySelected>True</tns:TPLiabilitySelected>			<tns:PADriverSelected>True</tns:PADriverSelected>			<tns:PAFamilyPremiumSelected>true</tns:PAFamilyPremiumSelected>		</tns:SelectedCovers>		<tns:PolicyEndDate>'+enddatetemp+'</tns:PolicyEndDate>	</tns:Quote>	<tns:Client xmlns:tns="http://schemas.cordys.com/bagi/b2c/emotor/2.0">		<tns:ClientType>Individual</tns:ClientType>		<tns:CltDOB />		<tns:FinancierDetails>			<tns:IsFinanced>0</tns:IsFinanced>		</tns:FinancierDetails>		<tns:GivName>TW238275707201704130455394890 </tns:GivName>		<tns:SurName />		<tns:ClientExtraTag01>BIHAR</tns:ClientExtraTag01>		<tns:CityOfResidence>Bettiah</tns:CityOfResidence>		<tns:EmailID>pb@pb.com</tns:EmailID>		<tns:MobileNo>9777777777</tns:MobileNo>		<tns:RegistrationZone>B</tns:RegistrationZone>	</tns:Client></Session> </SessionDoc>        </serve>    </Body></Envelope>'
+       let password=xmldata2.Body.serve.SessionDoc.Session.SessionData.Password
+       let inittime=xmldata2.Body.serve.SessionDoc.Session.SessionData.InitTime
 
-        console.log(xmldata); 
-     
-    
+       console.log(startdatetemp,"raj")
+       console.log(enddatetemp,"kavitha")
+
+
+        let xmldata = '<Envelope xmlns="http://schemas.xmlsoap.org/soap/envelope/">      <Body>        <serve xmlns="http://schemas.cordys.com/gateway/Provider">            <SessionDoc><Session>	<SessionData xmlns="http://schemas.cordys.com/bagi/b2c/emotor/bpm/1.0">		<Index>1</Index>		<InitTime>'+inittime+'</InitTime>		<UserName>'+UserName+'</UserName>		<Password>'+password+'</Password>		<OrderNo>NA</OrderNo>		<QuoteNo>NA</QuoteNo>		<Route>INT</Route>		<Contract>MTR</Contract>		<Channel>signMtr</Channel>		<TransactionType>Quote</TransactionType>		<TransactionStatus>Fresh</TransactionStatus>		<ID>149208275275017943554968</ID>		<UserAgentID>2C000098</UserAgentID>		<Source>2C000098</Source>	</SessionData>	<tns:Vehicle xmlns:tns="http://schemas.cordys.com/bagi/b2c/emotor/2.0">		<tns:TypeOfBusiness>TR</tns:TypeOfBusiness>		<tns:AccessoryInsured>N</tns:AccessoryInsured>		<tns:NonElecAccessoryInsured>N</tns:NonElecAccessoryInsured>		<tns:AccessoryValue>0</tns:AccessoryValue>		<tns:BiFuelKit>			<tns:IsBiFuelKit>N</tns:IsBiFuelKit>			<tns:BiFuelKitValue>0</tns:BiFuelKitValue>			<tns:ExternallyFitted>N</tns:ExternallyFitted>		</tns:BiFuelKit>		<tns:DateOfRegistration>2014-04-01T00:00:00.000</tns:DateOfRegistration>		<tns:DateOfManufacture>2014-04-01T00:00:00.000</tns:DateOfManufacture>		<tns:RiskType>FTW</tns:RiskType>		<tns:Make>'+Make+'</tns:Make>		<tns:Model>'+Model+'</tns:Model>		<tns:FuelType>P</tns:FuelType>		<tns:Variant>X PRO DRUM DISC SELF</tns:Variant>		<tns:IDV>41208</tns:IDV>		<tns:VehicleAge>4</tns:VehicleAge>		<tns:CC>110</tns:CC>		<tns:PlaceOfRegistration>Bettiah</tns:PlaceOfRegistration>		<tns:SeatingCapacity>2</tns:SeatingCapacity>		<tns:VehicleExtraTag01 />		<tns:RegistrationNo>BR22S3564 </tns:RegistrationNo>		<tns:ExShowroomPrice>52297</tns:ExShowroomPrice>		<tns:PaidDriver>False</tns:PaidDriver>	</tns:Vehicle>	<tns:Quote xmlns:tns="http://schemas.cordys.com/bagi/b2c/emotor/2.0">		<tns:LLDriver>false</tns:LLDriver>		<tns:ExistingPolicy>			<tns:Claims>0</tns:Claims>			<tns:NCB>35</tns:NCB>			<tns:PolicyType>Comprehensive</tns:PolicyType>			<tns:EndDate>2019-07-14T23:59:59.000</tns:EndDate>		</tns:ExistingPolicy>		<tns:PolicyStartDate>'+startdatetemp+'</tns:PolicyStartDate>		<tns:Deductible>0</tns:Deductible>		<tns:PAFamilySI>0</tns:PAFamilySI>		<tns:AgentNumber />		<tns:DealerId />		<tns:Premium>			<tns:Discount />		</tns:Premium>		<tns:SelectedCovers>			<tns:CarDamageSelected>True</tns:CarDamageSelected>			<tns:PAFamilyPremiumSelected>true</tns:PAFamilyPremiumSelected>			<tns:TPLiabilitySelected>True</tns:TPLiabilitySelected>			<tns:PADriverSelected>True</tns:PADriverSelected>			<tns:PAFamilyPremiumSelected>true</tns:PAFamilyPremiumSelected>		</tns:SelectedCovers>		<tns:PolicyEndDate>'+enddatetemp+'</tns:PolicyEndDate>	</tns:Quote>	<tns:Client xmlns:tns="http://schemas.cordys.com/bagi/b2c/emotor/2.0">		<tns:ClientType>Individual</tns:ClientType>		<tns:CltDOB />		<tns:FinancierDetails>			<tns:IsFinanced>'+financed+'</tns:IsFinanced>		</tns:FinancierDetails>		<tns:GivName>'+givname+' </tns:GivName>		<tns:SurName />		<tns:ClientExtraTag01>'+stateofregistration+'</tns:ClientExtraTag01>		<tns:CityOfResidence>'+cityofregistration+'</tns:CityOfResidence>		<tns:EmailID>'+emailId+'</tns:EmailID>		<tns:MobileNo>'+mobileNo+'</tns:MobileNo>		<tns:RegistrationZone>'+zone+'</tns:RegistrationZone>	</tns:Client></Session> </SessionDoc>        </serve>    </Body></Envelope>'
+        
         console.log('Done');
          if (!xmldata) {
             logger.error('Body Is Invalid');
             console.log("invalid body ")
             return res.status(400).json({
                 message: 'Invalid Request !'
-            });
+                                        });
         
-        }else{
+                          }else{
             logger.fatal('Premium Request Sucessfull....');
             bharathiquickquote.bharathiquickquote(xmldata)
         
@@ -1402,12 +705,12 @@ console.log(enddatetemp,"kavitha")
                     res.status(result.status).json({
                         message: result.message,
                         response: result.Response
-                    })
-                })
+                                                   })
+                               })
         
                 .catch(err => res.status(err.status).json({
                     message: err.message
-                }));
+                                                            }));
         
             }
         
@@ -1467,86 +770,7 @@ console.log(enddatetemp,"kavitha")
 
    
     
-    router.post('/godigitquickquote', (req, res) => {
-        console.log('Haiiiiiii');
-        if (!checkToken(req)) {
-            console.log("invalid token")
-            return res.status(401).json({
-                message: "invalid token"
-            })
-        }
-     
-        logger.fatal('Entering Into godigitcreatequote........');
-       const quickquote = req.body;
-        console.log("Request",quickquote);    
-        
-    
-         if (!quickquote) {
-        logger.error('Body Is Invalid');
-        console.log("invalid body ")
-        return res.status(400).json({
-            message: 'Invalid Request !'
-        });
-    
-    }else{
-        
-        logger.fatal('quickquote Request Sucessfull....');
-        godigitquickquote.godigitquickquote(quickquote)
-    
-        .then(result => {
-           
-                res.status(result.status).json({
-                    message: result.message,
-                    response: result.Response
-                })
-            })
-    
-            .catch(err => res.status(err.status).json({
-                message: err.message
-            }));
-    
-        }
-    });  
-    router.post('/godigitcreatequote', (req, res) => {
-        console.log('Haiiiiiii');
-        //console.log("Request: ", req.body.contract);
-        // if (!checkToken(req)) {
-        //     console.log("invalid token")
-        //     return res.status(401).json({
-        //         message: "invalid token"
-        //     })
-        // }
-        logger.fatal('Entering Into godigitcreatequote........');
-       const createquote = req.body;
-       
-        console.log("Request",createquote);
-                
-             if (!createquote) {
-        logger.error('Body Is Invalid');
-        console.log("invalid body ")
-        return res.status(400).json({
-            message: 'Invalid Request !'
-        });
-    
-    }else{
-       
-        logger.fatal('createquote Request Sucessfull....');
-        godigitcreatequote.godigitcreatequote(createquote)
-    
-        .then(result => {
-           
-                res.status(result.status).json({
-                    message: result.message,
-                    response: result.Response
-                })
-            })
-    
-            .catch(err => res.status(err.status).json({
-                message: err.message
-            }));
-    
-        }
-    });
+   
 
 
 
@@ -1595,12 +819,12 @@ console.log(enddatetemp,"kavitha")
     router.post('/digitgo2wquickquote', (req, res) => {
         console.log('Haiiiiiii');
         //console.log("Request: ", req.body.contract);
-        // if (!checkToken(req)) {
-        //     console.log("invalid token")
-        //     return res.status(401).json({
-        //         message: "invalid token"
-        //     })
-        // }
+        if (!checkToken(req)) {
+            console.log("invalid token")
+            return res.status(401).json({
+                message: "invalid token"
+            })
+        }
         logger.fatal('Entering Into digitgo2wquickquote........');
        const createquote = req.body;
        
@@ -1898,6 +1122,28 @@ logger.fatal('Entering in Calculate Premium....');
     
         }
     });
+    router.get('/royalmasterdetail', cors(), (req, res) => {
+        var data ;
+        const result = excelToJson({
+            sourceFile: 'uploads/royalmaster.xlsx',
+        });
+            var lookup = {};
+            var items = result.Sheet1;
+            var final = [];
+             var item
+            for (var item, i = 1; item = items[i++];) {
+                var name = item.E;
+    
+                if (!(name in lookup)) {
+                    lookup[name] = 1;
+                    final.push(name);
+                }  
+            } 
+            console.log("printing unique ",final)
+    
+            //royalmasterdetails.royalmasterdetails(final)
+         res.send(final);
+    }); 
 
     router.post('/gproposalrequestrollover', (req, res) => {
         if (!checkToken(req)) {
@@ -2082,38 +1328,7 @@ logger.fatal('Entering in Calculate Premium....');
              
              
          });
-    router.post("/addPolicy", (req, res) => {
-        const userid = getUserId(req)
-        console.log(userid);
-        const addPolicyObject=req.body.addPolicyObject;
-
-        if (!userid || !userid.trim()) {
-            // the if statement checks if any of the above paramenters are null or not..if
-            // is the it sends an error report.
-            res
-                .status(400)
-                .json({
-                    message: 'Invalid Request !'
-                });
-
-        } else {
-
-            addPolicy
-                .addPolicy(userid,addPolicyObject)
-                .then(function(result) {
-                    console.log(result)
-
-                    return res.json({
-                        "status": true,
-                        "message":result.message 
-                    });
-                })
-                .catch(err => res.status(err.status).json({
-                    message: err.message
-                }));
-        }
-
-    });
+   
 
     router.get("/readIndex", cors(), (req, res) => {
 
@@ -2308,333 +1523,10 @@ logger.fatal('Entering in Calculate Premium....');
 
     });
 
-    router.get('/claim/Claimlist', (req, res) => {
+    
+   
 
-        if (checkToken(req)) {
-
-            fetchClaimlist
-                .fetch_Claim_list({
-                    "user": "risabh",
-                    "getclaims": "getclaims"
-                })
-                .then(function(result) {
-                    var daysDifference = [];
-                    var claimDifference = [];
-                    for (let i = 0; i < result.claimlist.claimlist.length; i++) {
-
-                        if (result.claimlist.claimlist[i].claimsettleddate !== "0001-01-01T00:00:00Z") {
-
-                            var date1 = new Date(result.claimlist.claimlist[i].claimnotifieddate);
-                            console.log("date1" + date1);
-                            var date2 = new Date(result.claimlist.claimlist[i].claimsettleddate);
-                            console.log("date1" + date2);
-                            var timeDiff = Math.abs(date2.getTime() - date1.getTime());
-                            var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
-                            console.log("diffDays" + diffDays);
-                            daysDifference.push(diffDays)
-                            console.log("daysDifference" + daysDifference);
-                            var total = 0;
-                            for (let i = 0; i < daysDifference.length; i++) {
-                                total += daysDifference[i];
-                            }
-                            var averagedays = total / daysDifference.length;
-                            var longest = Math
-                                .max
-                                .apply(null, daysDifference)
-                            var shortest = Math
-                                .min
-                                .apply(null, daysDifference)
-
-                        }
-
-                    }
-                    res.json({
-                        message: "user claims found",
-                        allClaims: result,
-                        Average: averagedays,
-                        Longest: longest,
-                        Shortest: shortest
-                    });
-                    //res.json(result)
-                })
-                .catch(err => res.status(err.status).json({
-                    message: err.message
-                }));
-
-        } else {
-
-            res
-                .status(401)
-                .json({
-                    message: 'cant fetch data !'
-                });
-        }
-    });
-    router.post('/createClaim', cors(), (req, res) => {
-        const userid = getUserId(req)
-        const SubmissionClaim = req.body.transaction;
-        const phonetosend = req.body.phone;
-        console.log(phonetosend);
-        const emailtosend = req.body.email;
-        console.log(emailtosend);
-        var messagetosend = 'Thank you for choosing HDFC Ergo to insure your Motor. Please wait for 4-5 worki' +
-            'ng days to receive your copy of the Insurance Policy Document';
-
-        const policyNumber = SubmissionClaim.policyNumber;
-        const claim_no = SubmissionClaim.claim_no;
-        const claimSubmittedDate = new Date();
-        const status = "Claim Submitted";
-
-        SubmissionClaim.claimSubmittedDate = claimSubmittedDate;
-        SubmissionClaim.status = status;
-        SubmissionClaim.InsuredId = userid;
-        console.log("SubmissionClaim" + JSON.stringify(SubmissionClaim));
-        const transactionString = JSON.stringify(SubmissionClaim);
-        console.log("transactionString" + transactionString);
-        if (!userid || !userid.trim()) {
-
-            res
-                .status(400)
-                .json({
-                    message: 'Invalid Request !'
-                });
-        } else {
-
-            var firstMethod = function() {
-                var promise = new Promise(function(resolve, reject) {
-                    createClaim
-                        .createClaim(claim_no, SubmissionClaim)
-                        .then(result => {
-                            var message = result.message
-                            console.log("message" + message);
-                            resolve(message);
-
-                        })
-                        .catch(err => res.status(err.status).json({
-                            message: err.message
-                        }));
-                });
-                return promise;
-            };
-
-            var secondMethod = function() {
-
-                updatetransaction
-                    .updatetransaction(policyNumber, transactionString, userid)
-                    .then((result) => {
-                        if (result !== null && result !== '') {
-                            var mailOptions = {
-                                transport: transporter,
-                                from: '"Marin Service"<vikram.viswanathan@rapidqube.com>',
-                                to: emailtosend,
-                                subject: 'Policy Issue Notification',
-
-                                html: "Hello,<br> Thank you for choosing HDFC Ergo to insure your Motor. Please wait fo" +
-                                    "r 4-5 working days to receive your copy of the Insurance Policy Document<br>"
-                            };
-                            transporter.sendMail(mailOptions, (error, info) => {
-                                if (error) {}
-                            });
-                            // nexmo     .message     .sendSms('919768135452', phonetosend, messagetosend, {
-                            //         type: 'unicode'     }, (err, responseData) => {         if
-                            // (responseData) {             console.log(responseData)         }     });
-
-                            res
-                                .status(200)
-                                .json({
-                                    "message": result.message,
-                                    "status": "success"
-                                });
-                        }
-
-                    })
-                    .catch(err => res.status(err.status).json({
-                        message: err.message
-                    }));
-
-            };
-            firstMethod().then(secondMethod);
-        }
-
-    });
-
-    router.post('/rejectClaim', cors(), (req, res) => {
-        const userid = getUserId(req)
-        const RejectionClaim = req.body.transaction;
-        const phonetosend = req.body.phone;
-        console.log(phonetosend);
-        const emailtosend = req.body.email;
-        console.log(emailtosend);
-        var messagetosend = 'Thank you for choosing HDFC Ergo to insure your Motor. Please wait for 4-5 worki' +
-            'ng days to receive your copy of the Insurance Policy Document';
-
-        const policyNumber = RejectionClaim.policyNumber;
-        const claim_no = RejectionClaim.claim_no;
-        const claimRejectedDate = new Date();
-        const status = "Claim Rejected";
-
-        RejectionClaim.claimRejectedDate = claimRejectedDate;
-        RejectionClaim.status = status;
-        RejectionClaim.ExaminerId = userid;
-        console.log("RejectionClaim" + JSON.stringify(RejectionClaim));
-        const transactionString = JSON.stringify(RejectionClaim);
-        console.log("transactionString" + transactionString);
-        if (!userid || !userid.trim()) {
-
-            res
-                .status(400)
-                .json({
-                    message: 'Invalid Request !'
-                });
-        } else {
-
-            var firstMethod = function() {
-                var promise = new Promise(function(resolve, reject) {
-                    rejectClaim
-                        .rejectClaim(claim_no, RejectionClaim)
-                        .then(result => {
-                            var message = result.message
-                            console.log("message" + message);
-                            resolve(message);
-
-                        })
-                        .catch(err => res.status(err.status).json({
-                            message: err.message
-                        }));
-                });
-                return promise;
-            };
-
-            var secondMethod = function() {
-
-                updatetransaction
-                    .updatetransaction(policyNumber, transactionString, userid)
-                    .then((result) => {
-                        if (result !== null && result !== '') {
-                            var mailOptions = {
-                                transport: transporter,
-                                from: '"Marin Service"<vikram.viswanathan@rapidqube.com>',
-                                to: emailtosend,
-                                subject: 'Policy Issue Notification',
-
-                                html: "Hello,<br> Thank you for choosing HDFC Ergo to insure your Motor. Please wait fo" +
-                                    "r 4-5 working days to receive your copy of the Insurance Policy Document<br>"
-                            };
-                            transporter.sendMail(mailOptions, (error, info) => {
-                                if (error) {}
-                            });
-                            // nexmo     .message     .sendSms('919768135452', phonetosend, messagetosend, {
-                            //         type: 'unicode'     }, (err, responseData) => {         if
-                            // (responseData) {             console.log(responseData)         }     });
-
-                            res
-                                .status(200)
-                                .json({
-                                    "message": result.message,
-                                    "status": "success"
-                                });
-                        }
-
-                    })
-                    .catch(err => res.status(err.status).json({
-                        message: err.message
-                    }));
-
-            };
-            firstMethod().then(secondMethod);
-        }
-
-
-
-    });
-
-    router.post('/examineClaim', cors(), (req, res) => {
-        const userid = getUserId(req)
-        const ExamineClaim = req.body.transaction;
-        const phonetosend = req.body.phone;
-        console.log(phonetosend);
-        const emailtosend = req.body.email;
-        console.log(emailtosend);
-        var messagetosend = 'Thank you for choosing HDFC Ergo to insure your Motor. Please wait for 4-5 worki' +
-            'ng days to receive your copy of the Insurance Policy Document';
-
-        const policyNumber = ExamineClaim.policyNumber;
-        const claim_no = ExamineClaim.claim_no;
-        const claimExaminedDate = new Date();
-        const status = "Claim Examined";
-
-        ExamineClaim.claimExaminedDate = claimExaminedDate;
-        ExamineClaim.status = status;
-        ExamineClaim.ExaminerId = userid;
-        console.log("ExamineClaim" + JSON.stringify(ExamineClaim));
-        const transactionString = JSON.stringify(ExamineClaim);
-        console.log("transactionString" + transactionString);
-        if (!userid || !userid.trim()) {
-
-            res
-                .status(400)
-                .json({
-                    message: 'Invalid Request !'
-                });
-        } else {
-
-            var firstMethod = function() {
-                var promise = new Promise(function(resolve, reject) {
-                    examineClaim
-                        .examineClaim(claim_no, ExamineClaim)
-                        .then(result => {
-                            var message = result.message
-                            console.log("message" + message);
-                            resolve(message);
-
-                        })
-                        .catch(err => res.status(err.status).json({
-                            message: err.message
-                        }));
-                });
-                return promise;
-            };
-
-            var secondMethod = function() {
-
-                updatetransaction
-                    .updatetransaction(policyNumber, transactionString, userid)
-                    .then((result) => {
-                        if (result !== null && result !== '') {
-                            var mailOptions = {
-                                transport: transporter,
-                                from: '"Marin Service"<vikram.viswanathan@rapidqube.com>',
-                                to: emailtosend,
-                                subject: 'Policy Issue Notification',
-
-                                html: "Hello,<br> Thank you for choosing HDFC Ergo to insure your Motor. Please wait fo" +
-                                    "r 4-5 working days to receive your copy of the Insurance Policy Document<br>"
-                            };
-                            transporter.sendMail(mailOptions, (error, info) => {
-                                if (error) {}
-                            });
-                            // nexmo     .message     .sendSms('919768135452', phonetosend, messagetosend, {
-                            //         type: 'unicode'     }, (err, responseData) => {         if
-                            // (responseData) {             console.log(responseData)         }     });
-
-                            res
-                                .status(200)
-                                .json({
-                                    "message": result.message,
-                                    "status": "success"
-                                });
-                        }
-
-                    })
-                    .catch(err => res.status(err.status).json({
-                        message: err.message
-                    }));
-
-            };
-            firstMethod().then(secondMethod);
-        }
-
-    });
+    
 
 
 

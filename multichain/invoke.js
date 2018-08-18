@@ -1,8 +1,8 @@
 let multichain = require("multichain-node")({
-    port: 9252,
+    port: 7748,
     host: '127.0.0.1',
     user: "multichainrpc",
-    pass: "Axh1jhvBukXTXLAr8aVJzG829JFUZDrvptvqkoYkWyZd"        
+    pass: "3BCPQFKTWUCWJzrqsMsXEXvN5aXY3G5kUDSzWU7qgxQm"        
 });
 
 
@@ -22,7 +22,7 @@ function savetransaction(params) {
     }
     console.log("hex",hex);
     
-    multichain.publish({stream: "policyInfo",key: policyNumber,data: hex }, (err, res) => {
+    multichain.publish({stream: "policy",key: policyNumber,data: hex }, (err, res) => {
         console.log(res)
         if(err == null){
          return resolve({response:res});

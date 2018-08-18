@@ -10704,3 +10704,38 @@
 [2018-08-07T11:24:39.232] [FATAL] readypolicy - Successfull Taking Response from calculatepremium API.....
 [2018-08-07T11:24:39.245] [FATAL] readypolicy - Successfull in calculating premium response
 [2018-08-07T11:24:39.246] [FATAL] readypolicy - Storing  Responses in Blockchain
+[2018-08-17T15:13:01.168] [FATAL] readypolicy - Server has started App is Running on Port 8082
+[2018-08-17T15:14:23.566] [FATAL] readypolicy - Server has started App is Running on Port 8082
+[2018-08-17T15:18:28.124] [FATAL] readypolicy - Server has started App is Running on Port 8082
+[2018-08-17T15:22:04.086] [FATAL] readypolicy - Server has started App is Running on Port 8082
+[2018-08-17T15:22:06.548] [FATAL] readypolicy - Entering Into Calculate Premium......
+[2018-08-17T15:22:06.551] [FATAL] readypolicy - Premium Request Sucessfull....
+[2018-08-17T15:22:06.565] [FATAL] readypolicy - Calculatepremium
+[2018-08-17T15:22:09.188] [FATAL] readypolicy - Successfull Taking Response from calculatepremium API.....
+[2018-08-17T15:22:09.250] [FATAL] readypolicy - Successfull in calculating premium response
+[2018-08-17T15:22:09.250] [FATAL] readypolicy - Storing  Responses in Blockchain
+[2018-08-17T15:24:05.478] [FATAL] readypolicy - Server has started App is Running on Port 8082
+[2018-08-17T15:24:13.043] [FATAL] readypolicy - Entering Into Calculate Premium......
+[2018-08-17T15:24:13.045] [FATAL] readypolicy - Premium Request Sucessfull....
+[2018-08-17T15:24:13.055] [FATAL] readypolicy - Calculatepremium
+[2018-08-17T15:24:14.478] [FATAL] readypolicy - Successfull Taking Response from calculatepremium API.....
+[2018-08-17T15:24:14.497] [FATAL] readypolicy - Successfull in calculating premium response
+[2018-08-17T15:24:14.497] [FATAL] readypolicy - Storing  Responses in Blockchain
+[2018-08-17T16:15:07.632] [FATAL] readypolicy - Entering Into Calculate Premium......
+[2018-08-17T16:15:07.642] [FATAL] readypolicy - Premium Request Sucessfull....
+[2018-08-17T16:15:07.675] [FATAL] readypolicy - Calculatepremium
+[2018-08-17T16:15:13.982] [FATAL] readypolicy - Successfull Taking Response from calculatepremium API.....
+[2018-08-17T16:15:14.006] [FATAL] readypolicy - Successfull in calculating premium response
+[2018-08-17T16:15:14.006] [FATAL] readypolicy - Storing  Responses in Blockchain
+[2018-08-18T12:49:35.097] [FATAL] readypolicy - Server has started App is Running on Port 8082
+[2018-08-18T12:50:57.396] [FATAL] readypolicy - Server has started App is Running on Port 8082
+[2018-08-18T12:56:41.593] [FATAL] readypolicy - Server has started App is Running on Port 8082
+[2018-08-18T12:57:28.699] [FATAL] readypolicy - Server has started App is Running on Port 8082
+[2018-08-18T12:59:35.580] [FATAL] readypolicy - royalmasterdetails
+[2018-08-18T13:08:28.404] [FATAL] readypolicy - Server has started App is Running on Port 8082
+[2018-08-18T13:09:12.805] [FATAL] readypolicy - Server has started App is Running on Port 8082
+[2018-08-18T13:09:17.614] [FATAL] readypolicy - royalmasterdetails
+[2018-08-18T13:12:16.477] [FATAL] readypolicy - Server has started App is Running on Port 8082
+[2018-08-18T13:12:22.692] [FATAL] readypolicy - royalmasterdetails
+[2018-08-18T13:15:15.920] [FATAL] readypolicy - Server has started App is Running on Port 8082
+[2018-08-18T13:39:04.511] [FATAL] readypolicy - Server has started App is Running on Port 8082

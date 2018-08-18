@@ -1,8 +1,8 @@
 let multichain = require("multichain-node")({
-    port: 9252,
+    port: '7748',
     host: '127.0.0.1',
     user: "multichainrpc",
-    pass: "Axh1jhvBukXTXLAr8aVJzG829JFUZDrvptvqkoYkWyZd"        
+    pass: "3BCPQFKTWUCWJzrqsMsXEXvN5aXY3G5kUDSzWU7qgxQm"        
 });
 
 
@@ -13,8 +13,8 @@ function readAllRequest(params) {
         var key = params.key
         console.log("key------>",'"'+key+'"')
         var response;    
-    multichain.listStreamKeyItems({stream: "policyInfo", key:'"' +key+ '"'}, (err, res) => {
-        console.log(res)
+    multichain.listStreamKeyItems({stream: "policy", key:'"' +key+ '"'}, (err, res) => {
+        console.log(res,"kavi")
         if(err == null){
 
             for (let i = 0; i < res.length; i++) {
