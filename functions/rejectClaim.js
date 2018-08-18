@@ -1,7 +1,7 @@
 'use strict';
 
 
-const claim = require('../models/claimdetails');
+//const claim = require('../models/claimdetails');
 var user = 'risabh.s';
 var affiliation = 'fundraiser';
 

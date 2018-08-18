@@ -68,6 +68,8 @@ const digitgo2wquickquote = require('./functions/digitgo2wquickquote');
 // const royalmasterdetails =require('./functions/royalmasterdetails');
 
 
+const digitgoPaymentGateway = require('./functions/digitgoPaymentGateway');
+//const godigitcreatequote = require('./functions/godigitcreatequote');
 var startdatetemp;
 var enddatetemp;
 
@@ -858,6 +860,73 @@ module.exports = router => {
     });
 
     
+
+    router.post('/digitgo2wquickquote', (req, res) => {
+        console.log('Haiiiiiii');
+        //console.log("Request: ", req.body.contract);
+        // if (!checkToken(req)) {
+        //     console.log("invalid token")
+        //     return res.status(401).json({
+        //         message: "invalid token"
+        //     })
+        // }
+        logger.fatal('Entering Into digitgo2wquickquote........');
+       const createquote = req.body;
+       
+        console.log("Request",createquote);
+                
+             if (!createquote) {
+        logger.error('Body Is Invalid');
+        console.log("invalid body ")
+        return res.status(400).json({
+            message: 'Invalid Request !'
+        });
+    
+    }else{
+       
+        logger.fatal('quickquote Request Sucessfull....');
+        digitgo2wquickquote.digitgo2wquickquote(createquote)
+    
+        .then(result => {
+           
+                res.status(result.status).json({
+                    message: result.message,
+                    response: result.Response
+                })
+            })
+    
+            .catch(err => res.status(err.status).json({
+                message: err.message
+            }));
+    
+        }
+    });
+
+    /**
+     * @description : Digitgo PaymentGateway Functionality
+     */
+    router.post('/digitgoPaymentGateway', (req, res) => {
+
+        var data = req.body;
+        console.log("data ::",data);
+
+       
+        digitgoPaymentGateway.digitgoPaymentGateway(data)
+    
+        .then(result => {
+           
+                res.status(result.status).json({
+                    message: result.message,
+                    response: result.Response
+                })
+                //res.redirect("'"+result.Response+"'");
+            })
+    
+            .catch(err => res.status(err.status).json({
+                message: err.message
+            }));
+    
+    })
     
 
     router.post('/gproposalrequest', (req, res) => {
