@@ -2,6 +2,7 @@ var js2xmlparser = require("js2xmlparser");
 var bcSdk = require('../multichain/invoke.js');
 //var xml2jsparser = require("xml2jsparser")
 var parser = require('xml2json');
+var json2xml = require('json2xml')
 var request = require("request");
 var utf8 = require('utf8');
 const log4js = require('log4js');
@@ -25,13 +26,14 @@ return new Promise((resolve, reject) => {
   // })
 
 
-var object = js2xmlparser.parse("CALCULATEPREMIUMREQUEST", premiumrequest)
+//var object = js2xmlparser.parse("CALCULATEPREMIUMREQUEST", premiumrequest)
+var object = json2xml(premiumrequest)
 console.log("object",object)
 logger.fatal('Calculatepremium');
 
 
 request.post({
-    url:"https://dtc.royalsundaram.net/DTCWS/Services/Product/TwoWheeler/CalculatePremium",
+    url:"https://dtcdoc.royalsundaram.in/Services/Product/TwoWheeler/CalculatePremium",
     port: 9000,
     method:"POST",
     headers:{
@@ -46,16 +48,16 @@ function(error, response, body){
     console.log("body",body);
     console.log(error);
     //console.log(xml2jsparser.parse("CALCULATEPREMIUMREQUEST", body))
-    var json = parser.toJson(body);
-    var json1 = JSON.parse(json)
-    var data =  JSON.stringify(json1)
+    // var json = parser.toJson(body);
+    // var json1 = JSON.parse(json)
+    var data =  JSON.parse(body)
     
-    var status = JSON.stringify(json1.PREMIUMDETAILS.Status.StatusCode)
+    var status = JSON.stringify(data.PREMIUMDETAILS.Status.StatusCode)
     console.log("status---->",status)
-    console.log("to json -> %s", JSON.stringify(json1));
-    if (status === '"S-0002"'){
+    //console.log("to json -> %s", JSON.stringify(json1));
+    if (status === "S-0002"){
         logger.fatal('Successfull in calculating premium response');
-    var key  =  JSON.stringify(json1.PREMIUMDETAILS.DATA.QUOTE_ID)
+    var key  =  JSON.stringify(data.PREMIUMDETAILS.DATA.QUOTE_ID)
     const transactiondetails = ({
         data: data,
         key:key
@@ -64,18 +66,19 @@ function(error, response, body){
     bcSdk.savetransaction({
         Transactiondetails:transactiondetails   
          })
+         console.log(Transactiondetails)
 return  resolve({
     status: 201,
-    message:"Success",
-    Response:json
+    message:data.PREMIUMDETAILS.Status.Message,
+    Response:data
     
 })
     }else{
-        logger.error(json1.PREMIUMDETAILS.Status.Message);
+        logger.error(data.PREMIUMDETAILS.Status.Message);
         return  resolve({
-            status: 400,
-            message:json1.PREMIUMDETAILS.Status.Message,
-            Response:json
+            status: 200,
+            message:data.PREMIUMDETAILS.Status.Message,
+            Response:data
             
         })
     }

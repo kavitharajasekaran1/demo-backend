@@ -22,6 +22,7 @@ const nodemailer = require('nodemailer');
 var express = require('express');
 var router = express.Router();
 const log4js = require('log4js');
+
 //const log4js = require('./log4js-node/lib/log4js');
 log4js.configure({
     appenders: { readypolicy: { type: 'file', filename: 'readypolicy.log' } },
@@ -729,14 +730,14 @@ module.exports = router => {
     
     
     router.post('/calculatepremium', (req, res) => {
-        if (!checkToken(req)) {
-            console.log("invalid token")
-            return res.status(401).json({
-                message: "invalid token"
-            })
-        }
+        // if (!checkToken(req)) {
+        //     console.log("invalid token")
+        //     return res.status(401).json({
+        //         message: "invalid token"
+        //     })
+        // }
         logger.fatal('Entering Into Calculate Premium......');
-        const premiumrequest = req.body.CALCULATEPREMIUMREQUEST;
+        const premiumrequest = req.body;
        
       
        console.log(premiumrequest,"premiumrequest")
@@ -1192,7 +1193,7 @@ logger.fatal('Entering in Calculate Premium....');
         }
     });
     router.get('/royalmasterdetail', cors(), (req, res) => {
-        var data ;
+        // var data ;
         const result = excelToJson({
             sourceFile: 'uploads/royalmaster.xlsx',
         });
@@ -1208,11 +1209,356 @@ logger.fatal('Entering in Calculate Premium....');
                     final.push(name);
                 }  
             } 
-            console.log("printing unique ",final)
+           // console.log("printing unique ",final.sort());
+        //     const result1 = excelToJson({
+        //         sourceFile: 'uploads/Make Model Master.xlsx',
+        //     });
+        //    // console.log(result,"kavitha")
+        //     var lookup1 = {};
+        //     var items1 = result1.UAT;
+        //     var final1 = [];
+        //     //console.log(items,"hi")
+        //      var item1
+        //     for (var item1, i = 1; item1 = items1[i++];) {
+        //         var name1 = item1.B;
+        //         var name2=item1.C;
     
-            //royalmasterdetails.royalmasterdetails(final)
-         res.send(final);
+        //         if (!((name1 in lookup1))&&(name2==="FTW")) {
+        //             lookup1[name1] = 1;
+        //             final1.push(name1);
+        //         }  
+        //     }
+        //     console.log("printing unique11111 ",final1.sort());
+            
+            // var arr = final.concat(final1);
+        //     console.log(arr)
+
+        //     var result_array = [];
+
+
+        //     let manufacturer= merge_array(final, final1);
+            
+        //     function merge_array(final, final1) {
+        //         var arr = final.concat(final1);
+        //         console.log(arr)
+        //         var len = arr.length;
+        //         var assoc = {};
+            
+        //         while(len--) {
+        //             var item = arr[len];
+            
+        //             if(!assoc[item]) 
+        //             { 
+        //                 result_array.unshift(item);
+        //                 assoc[item] = true;
+        //             }
+        //         }
+                
+        //         return result_array;
+               
+        //     }
+        //     console.log("hi",manufacturer);
+           res.send(final.sort());
+
+    
+         
     }); 
+
+    router.get('/Occupationcode', cors(), (req, res) => {
+        const result = excelToJson({
+            sourceFile: 'uploads/Occupation Master.xlsx',
+        });
+        var occupation=[]
+           
+          for(var i=1;i<8;i++){  
+          occupation.push(result["Occupation Master"][i]) 
+              
+          }
+          res.send(occupation);
+          console.log(occupation)
+
+          
+     });
+     router.get('/Bharathimake', cors(), (req, res) => {
+       // var request=req.body.model;
+        console.log(request,"kavi")
+
+        const result = excelToJson({
+            sourceFile: 'uploads/Make Model Master.xlsx',
+        });
+       // console.log(result,"kavitha")
+        var lookup = {};
+        var items = result.UAT;
+        var final = [];
+        //console.log(items,"hi")
+         var item
+        for (var item, i = 1; item = items[i++];) {
+            var name = item.B;
+            var name1=item.C;
+
+            if (!((name in lookup))&&(name1==="FTW")) {
+                lookup[name] = 1;
+                final.push(name);
+            }  
+        }
+        res.send(final)
+        console.log(final)
+
+    });
+    router.get('/mastermanufacture', cors(), (req, res) => {
+        const result = excelToJson({
+            sourceFile: 'uploads/manufacture.xlsx',
+
+        });
+        var items = result.Sheet1;
+        var lookup = {};
+        var final=[]
+        for (var item, i = 1; item = items[i++];) {
+            var name=item.A;
+            lookup[name] = 1;
+            final.push(name);
+        }
+        res.send(final.sort())
+
+
+
+
+
+    });
+    router.get('/KTMmanufacture', cors(), (req, res) => {
+        const result = excelToJson({
+            sourceFile: 'uploads/ktm duke.xlsx',
+
+        });
+        var items = result.Sheet1;
+        var lookup = {};
+        var final=[]
+        var item
+        for (var item, i = 1; item = items[i++];) {
+
+        var manufacture=item.A
+        var model= item.B
+        var variant = item.C
+        var bharathimodel =item.D
+        var axavariant = item.E
+        var royalmodel = item.F
+        var royalcode = item.G
+        var arrToObj = require('array-to-object');
+
+
+        if (manufacture==="KTM" && model==="DUKE"&& variant==="200 CC") {
+            var keys=['bharathimodel','axavariant','royalmodel','royalcode']
+            
+            var values=[bharathimodel,axavariant,royalmodel,royalcode]
+            var object = arrToObj(keys, values);
+    
+        }
+    }
+        res.send(object)
+
+
+
+
+
+    });
+
+    router.get('/manufacture', cors(), (req, res) => {
+        // var request=req.body.manufacture;
+         //console.log(request,"kavi")
+ 
+         const result = excelToJson({
+             sourceFile: 'uploads/royalbarathimaster.xlsx',
+         });
+        var arrToObj = require('array-to-object');
+
+         var items = result.Sheet1;
+        
+         console.log(items,"hi")
+          var item; 
+          for (var item, i = 1; item = items[i++];) {
+            var name = item.A;
+            var bharathi=item.B;
+            const modelname=[]
+            const lookup={}
+            
+            var Royal=item.C
+            const value=item.F
+            if (name==="BAJAJ"){
+          
+            
+            var keys=['bharathi','Royal']
+            
+        var values=[bharathi,Royal]
+        var object = arrToObj(keys, values);
+
+        var final=[]
+        if(value==="BAJAJ"){
+        for (var item, i = 1; item = items[i++];) {
+            const royalmodel=item.H
+            lookup[royalmodel] = 1;
+            final.push(royalmodel);
+        }
+    }
+        console.log(final,"kaviiiiiiiiii")
+        object["Royalmodel"]= final
+    }
+        
+}
+console.log(object,"good")
+res.send(object)
+});
+    
+
+       
+    
+           
+                  
+           
+            
+        
+       
+          
+          
+          
+        
+        
+       
+    router.get('/Bharathimodel', cors(), (req, res) => {
+        // var request=req.body.model;
+        // console.log(request,"kavi")
+ 
+         const result = excelToJson({
+             sourceFile: 'uploads/Make Model Master.xlsx',
+         });
+        // console.log(result,"kavitha")
+         var lookup = {};
+         var items = result.UAT;
+         var final = [];
+         //console.log(items,"hi")
+          var item
+         for (var item, i = 1; item = items[i++];) {
+             var name = item.D;
+             var name1=item.C;
+             let manuname=item.B
+ 
+             if (!(name in lookup)&&(manuname=="HONDA MOTORS")&&(name1==="FTW")) {
+                  lookup[name] = 1;
+                 final.push(name);
+             }  
+         }
+         res.send(final)
+         console.log(final)
+ 
+     });
+     router.get('/Bharathivariant', cors(), (req, res) => {
+        // var request=req.body.model;
+        // console.log(request,"kavi")
+ 
+         const result = excelToJson({
+             sourceFile: 'uploads/Make Model Master.xlsx',
+         });
+       
+         var items = result.UAT;
+         var final = [];
+        
+          var item
+         for (var item, i = 1; item = items[i++];) {
+             var name2= item.D;
+             var name1=item.C;
+             var name = item.E
+             
+                if ((name1==="FTW")) {
+                    if(name2==="DUKE"){
+                    
+                    final.push(name);
+                } 
+             }
+ 
+              
+         }
+         res.send(final)
+         console.log(final)
+ 
+     });
+
+
+
+     router.post('/modelcode', cors(), (req, res) => {
+        var request=req.body.model;
+        console.log(request,"kavi")
+
+        const result = excelToJson({
+            sourceFile: 'uploads/royalmaster.xlsx',
+        });
+            var lookup = {};
+            var model1 ={}
+            var items = result.Sheet1;
+            var final = [];
+             var item
+            for (var item, i = 1; item = items[i++];) {
+                for (var item, i = 1; item = items[i++];) {
+        
+                var name = item.I;
+                var model2 =item.H;
+                if(name==request)
+                        if (!(model2 in model1)) {
+                    model1[model2] = 1;
+                    final.push(model2);
+                }  
+            } 
+        }
+            console.log("printing unique ",final)
+            res.send(final)
+     });
+     router.post('/make', cors(), (req, res) => {
+        var request=req.body.make;
+        console.log(request,"kavi")
+
+         const result = excelToJson({
+         sourceFile: 'uploads/royalmaster.xlsx',
+                                   });
+         var lookup = {};
+         var model1 ={}
+         var items = result.Sheet1;
+         var final = [];
+         var code1 =[];
+         var item
+        for (var item, i = 1; item = items[i++];) {
+        for (var item, i = 1; item = items[i++];) {
+
+        var name = item.E;
+        var model2 =item.I;
+        var code =item.H;
+        if(name=="Hardley Davidson")
+   
+        
+                if (!(model2 in model1)) {
+            model1[model2] = 1;
+            final.push(model2);
+        }  
+    } 
+}
+    console.log("printing unique ",final.sort())
+    // const model=final.sort();
+    // const modellength=model.length
+    // console.log(modellength)
+    // console.log("model",model)
+    // for(var i=0;i<modellength;i++)
+    // {
+    //     if(model2=model[i]){
+        
+    //        code1.push(code)
+    //     }
+
+
+        
+    //  }
+    // console.log(code1,"got it")
+
+    res.send(final.sort())
+});
+   
+
 
     router.post('/gproposalrequestrollover', (req, res) => {
         if (!checkToken(req)) {
